@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import net.proteanit.sql.DbUtils;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -260,7 +261,37 @@ public class Subject extends JFrame {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				String sub_name = textFieldName.getText();
+				String sub_code = textField_1code.getText();
+				String Offered_year = choice.getSelectedItem();
+				String offered_sem = null;
+                if(rdbtnNewRadioButton.isSelected()) 
+                	offered_sem="1st Semester";
+                else {
+                	offered_sem="2nd Semester";
+                }
+                
+                int No_of_lecHours = (int) spinnerLec.getValue();
+                int No_of_tuteHours = (int) spinnerTute.getValue();
+                int No_of_labHours = (int) spinnerLab.getValue();
+                int No_of_evaHours = (int) spinnerEva.getValue();
+                
+                try {
+                	Class.forName("com.mysql.cj.jdbc.Driver");
+			       Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+                   String query = "INSERT INTO subject values(000,'" + sub_name + "','" + sub_code + "','" + Offered_year + "','" + offered_sem + "','"+No_of_lecHours+"','"+No_of_tuteHours+"','"+No_of_labHours+"','"+No_of_evaHours+"')";                                                                                                       
+                   Statement sta = connection.createStatement();
+                   int x = sta.executeUpdate(query);
+                   
+                   connection.close();
+                   JOptionPane.showMessageDialog(null, "Inserted Successfully");
+                   
+
+               } catch (Exception exception) {
+               	
+                   exception.printStackTrace();
+               }
                 
 				
 			}
@@ -422,7 +453,26 @@ public class Subject extends JFrame {
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				//int selectedRow=table.getSelectedRow();
+                DefaultTableModel model=(DefaultTableModel) table.getModel();
+				//String id=(model.getValueAt(selectedRow, 0).toString());
 				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                    String query = "select * from subject";
+                    Statement sta = connection.createStatement();
+                    ResultSet rs1 = sta.executeQuery(query);
+                    
+                    table.setModel(DbUtils.resultSetToTableModel(rs1));
+                    connection.close();
+                    
+                    
+                    
+                } catch (Exception exception) {
+                	
+                    exception.printStackTrace();
+                }
 			}
 		});
 		btnRefresh.setFont(new Font("Tahoma", Font.BOLD, 13));
