@@ -36,6 +36,7 @@ import net.proteanit.sql.DbUtils;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
 
 public class Subject extends JFrame {
 
@@ -201,10 +202,10 @@ public class Subject extends JFrame {
 		Choice choice = new Choice();
 		choice.setBounds(250, 204, 288, 18);
 		panel.add(choice);
-		choice.add("1");
-		choice.add("2");
-		choice.add("3");
-		choice.add("4");
+		choice.add("1st year");
+		choice.add("2nd year");
+		choice.add("3rd year");
+		choice.add("4th year");
 		
 		
 		
@@ -339,6 +340,12 @@ public class Subject extends JFrame {
 		panel_1.add(lblEvaluationHours);
 		
 		JButton btnNewButtUpdate = new JButton("Update");
+		btnNewButtUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
 		btnNewButtUpdate.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButtUpdate.setBounds(25, 435, 85, 33);
 		panel_1.add(btnNewButtUpdate);
@@ -349,6 +356,47 @@ public class Subject extends JFrame {
 		panel_1.add(btnNewButtClear);
 		
 		JButton btnNewButtDelete = new JButton("Delete");
+		btnNewButtDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int selectedRow = table.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table.getModel();
+			     String id =(model.getValueAt(selectedRow, 0).toString());
+			     
+				
+				try {
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+					
+					String sql = "DELETE  FROM subject WHERE id = "+id;
+					PreparedStatement pst = connection.prepareStatement(sql);
+			        int rs=pst.executeUpdate(sql);
+			        
+			        connection.close();
+	                   JOptionPane.showMessageDialog(null, "Deleted Successfully");
+  
+	               }
+				catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                    String query = "select * from subject";
+                    Statement sta = connection.createStatement();
+                    ResultSet rs1 = sta.executeQuery(query);
+                    
+                    table.setModel(DbUtils.resultSetToTableModel(rs1));
+                    connection.close();
+                    
+                    
+                    
+                } catch (Exception exception) {
+                	
+                    exception.printStackTrace();
+                }
+			}
+		});
 		btnNewButtDelete.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButtDelete.setBounds(156, 435, 85, 33);
 		panel_1.add(btnNewButtDelete);
@@ -399,10 +447,6 @@ public class Subject extends JFrame {
 		textField_3Code.setBounds(172, 73, 206, 19);
 		panel_1.add(textField_3Code);
 		
-		Choice choice_1 = new Choice();
-		choice_1.setBounds(172, 119, 258, 18);
-		panel_1.add(choice_1);
-		
 		JLabel lblNewLabelSub_1_1 = new JLabel("Offered Year");
 		lblNewLabelSub_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabelSub_1_1.setBounds(25, 119, 119, 19);
@@ -434,7 +478,7 @@ public class Subject extends JFrame {
 				
 				if (rdbtnNewRadioButton_3.isSelected())
 				{
-					rdbtnNewRadioButton_2.setSelected(false);
+					rdbtnNewRadioButton_2.setSelected(true);
 				}
 			}
 		});
@@ -442,6 +486,11 @@ public class Subject extends JFrame {
 		rdbtnNewRadioButton_3.setBackground(new Color(204, 204, 255));
 		rdbtnNewRadioButton_3.setBounds(172, 197, 103, 21);
 		panel_1.add(rdbtnNewRadioButton_3);
+		
+		String [] type = { "1st year", "2nd Year", "3rd Year", "4th Year"};
+		JComboBox combotype = new JComboBox(type);
+		combotype.setBounds(172, 120, 206, 21);
+		panel_1.add(combotype);
 		
 		JLabel lblNewLabel_4 = new JLabel("Update / Delete Subject Details");
 		lblNewLabel_4.setForeground(new Color(0, 0, 102));
@@ -493,7 +542,51 @@ public class Subject extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				/*try {
+			         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                   Statement sta = connection.createStatement();
+                   int row = table.getSelectedRow();
+                   DefaultTableModel model=(DefaultTableModel) table.getModel();
+   				   String selection = table.getModel().getValueAt(row, 0).toString();
+                   String sqlquery = "select * from subject where id = "+selection;
+                   ResultSet rs1 = sta.executeQuery(sqlquery);
+                   
+                   if(rs1.next()) {
+                   	
+                	textField_2Name.setText(rs1.getString("sub_name"));
+                	textField_3Code.setText(rs1.getString("sub_code"));
+                   	//choice_1.getSelectedItem();
+                   	
+					String semester = model.getValueAt(row, 4).toString();
+    				if(semester.equals("1st Semester")) {
+    					rdbtnNewRadioButton_2.setSelected(true);
+    				}else if(semester.equals("2nd Semester")){
+    					rdbtnNewRadioButton_3.setSelected(true);
+                   	
+                   
+                   
+                   }
+				}
+				catch(Exception exe) {
+					exe.printStackTrace();
+				}*/
 				
+				int selectedRow = table.getSelectedRow();
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				
+				textField_2Name.setText(model.getValueAt(selectedRow, 1).toString());
+				textField_3Code.setText(model.getValueAt(selectedRow, 2).toString());
+				combotype.setSelectedItem(model.getValueAt(selectedRow, 3).toString());
+				String semester = model.getValueAt(selectedRow, 4).toString();
+				if(semester.equals("1st Semester")) {
+					rdbtnNewRadioButton_2.setSelected(true);
+				}else if(semester.equals("2nd Semester")){
+					rdbtnNewRadioButton_3.setSelected(true);
+				}
+				spinner_1_3.setValue(model.getValueAt(selectedRow, 5));
+				spinner_1_2.setValue(model.getValueAt(selectedRow, 6));
+				spinner_1_1.setValue(model.getValueAt(selectedRow, 7));
+				spinner_1.setValue(model.getValueAt(selectedRow, 8));
 				
 				
 			}
