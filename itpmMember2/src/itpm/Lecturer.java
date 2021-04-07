@@ -15,8 +15,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import java.awt.Choice;
@@ -24,7 +31,17 @@ import java.awt.Button;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import net.proteanit.sql.DbUtils;
+
 import java.awt.SystemColor;
+import javax.swing.JComboBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Lecturer extends JFrame {
 
@@ -33,21 +50,31 @@ public class Lecturer extends JFrame {
 	private JPanel panellec;
 	private JPanel panellecdetail;
 	private JPanel panelDayshours;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textFieldName;
-	private JTextField textFieldEmpID;
+	private JTextField textField_lecName;
+	private JTextField textField_empID;
+	private JTextField textField_rank;
+	private JTextField monday;
+	private JTextField tuesday;
+	private JTextField wednesday;
+	private JTextField thursday;
+	private JTextField friday;
+	private JTextField saturday;
+	private JTextField sunday;
+	private JTextField textFieldName_1;
+	private JTextField textFieldEmpID_1;
 	private JTextField textFieldupdaterank;
 	private JTextField textFieldSeacrh;
-	private JTable table;
+	private JTable table_lecturer;
+	private JComboBox comboBox_Faculty;
+	private JComboBox comboBox_Dept;
+	private JComboBox comboBox_Center;
+	private JComboBox comboBox_Build;
+	private JComboBox comboBox_Lev;
+	private JComboBox comboBox_Lev2;
+	private JComboBox comboBox_Fac2;
+	private JComboBox comboBox_Dept2;
+	private JComboBox comboBox_Cent2;
+	private JComboBox comboBox_Build2;
 	private JTextField textFieldMon;
 	private JTextField textFieldTue;
 	private JTextField textFieldWed;
@@ -56,9 +83,7 @@ public class Lecturer extends JFrame {
 	private JTextField textFieldSat;
 	private JTextField textFieldSun;
 	private JTextField textFieldSearchDays;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTable table_1;
+	private JTable table_hours;
 
 	/**
 	 * Launch the application.
@@ -161,7 +186,7 @@ public class Lecturer extends JFrame {
 		
 		JLabel lblNewLabel_2_2 = new JLabel("Lecturer Name");
 		lblNewLabel_2_2.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_2_2.setBounds(21, 40, 209, 24);
+		lblNewLabel_2_2.setBounds(21, 40, 154, 24);
 		panel.add(lblNewLabel_2_2);
 		
 		JLabel lblNewLabel_2_2_1 = new JLabel("Employee ID");
@@ -189,55 +214,193 @@ public class Lecturer extends JFrame {
 		lblNewLabel_2_2_5.setBounds(21, 242, 209, 24);
 		panel.add(lblNewLabel_2_2_5);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(187, 40, 282, 26);
-		panel.add(textField_1);
+		textField_lecName = new JTextField();
+		textField_lecName.setColumns(10);
+		textField_lecName.setBounds(187, 40, 282, 26);
+		panel.add(textField_lecName);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(187, 89, 282, 26);
-		panel.add(textField_2);
+		textField_empID = new JTextField();
+		textField_empID.setColumns(10);
+		textField_empID.setBounds(187, 89, 282, 26);
+		panel.add(textField_empID);
 		
 		JLabel lblNewLabel_2_2_1_1 = new JLabel("Level");
 		lblNewLabel_2_2_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_2_2_1_1.setBounds(21, 135, 93, 24);
 		panel.add(lblNewLabel_2_2_1_1);
 		
-		Choice choice = new Choice();
-		choice.setBounds(187, 141, 353, 26);
-		panel.add(choice);
+		textField_rank = new JTextField();
+		textField_rank.setColumns(10);
+		textField_rank.setBounds(187, 242, 282, 26);
+		panel.add(textField_rank);
+		
+		JLabel lblNewLabel_level_required_1 = new JLabel("");
+		lblNewLabel_level_required_1.setForeground(Color.RED);
+		lblNewLabel_level_required_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_level_required_1.setBounds(187, 159, 282, 13);
+		panel.add(lblNewLabel_level_required_1);
 		
 		JButton btnNewButtongeneraterank = new JButton("Generate Rank");
+		btnNewButtongeneraterank.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String empid = (String)textField_empID.getText();
+				String levelS = (String)comboBox_Lev.getSelectedItem();
+				
+				if(comboBox_Lev.getSelectedItem()== "(select)") {
+					lblNewLabel_level_required_1.setText("Level is required");	
+				}else {
+					String rankString = levelS+"."+empid;
+					textField_rank.setText(rankString);
+					lblNewLabel_level_required_1.setText("");
+				}	
+			}
+		});
 		btnNewButtongeneraterank.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButtongeneraterank.setBounds(89, 184, 324, 31);
+		btnNewButtongeneraterank.setBounds(90, 189, 324, 31);
 		panel.add(btnNewButtongeneraterank);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(187, 242, 282, 26);
-		panel.add(textField_3);
+		
 		
 		JLabel lblNewLabel_2_2_5_1 = new JLabel("Faculty");
 		lblNewLabel_2_2_5_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_2_2_5_1.setBounds(21, 291, 149, 24);
 		panel.add(lblNewLabel_2_2_5_1);
 		
-		Choice choice_1 = new Choice();
-		choice_1.setBounds(187, 297, 353, 18);
-		panel.add(choice_1);
+		String [] fac = {"(select)", "IT", "Engineering", "Business Management", "Humanities & Sciences"};
+		comboBox_Faculty = new JComboBox(fac);
+		comboBox_Faculty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(comboBox_Faculty.getSelectedItem().equals("IT")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Dept.removeAllItems();
+					comboBox_Dept.addItem("(select)");
+					comboBox_Dept.addItem("IT");
+					comboBox_Dept.addItem("CSSE");
+					comboBox_Dept.addItem("CSE");
+					
+				}
+				else if(comboBox_Faculty.getSelectedItem().equals("Engineering")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Dept.removeAllItems();
+					comboBox_Dept.addItem("(select)");
+					comboBox_Dept.addItem("Mechanical E");
+					comboBox_Dept.addItem("Electronic E");
+					comboBox_Dept.addItem("Materials E");
+					comboBox_Dept.addItem("Civil E");
+					comboBox_Dept.addItem("QS");
+					}
+				else if(comboBox_Faculty.getSelectedItem().equals("Business Management")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Dept.removeAllItems();
+					comboBox_Dept.addItem("(select)");
+					comboBox_Dept.addItem("Accounting & Finance");
+					comboBox_Dept.addItem("Management");
+					comboBox_Dept.addItem("Marketing");
+					
+				}
+				else if(comboBox_Faculty.getSelectedItem().equals("Humanities & Sciences")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Dept.removeAllItems();
+					comboBox_Dept.addItem("(select)");
+					comboBox_Dept.addItem("English");
+					comboBox_Dept.addItem("Nursing");
+					comboBox_Dept.addItem("Law");
+					comboBox_Dept.addItem("Physical Sciences");					
+			}
+			}
+		});
+		comboBox_Faculty.setBounds(187, 295, 282, 21);
+		panel.add(comboBox_Faculty);
 		
-		Choice choice_2 = new Choice();
-		choice_2.setBounds(187, 343, 353, 18);
-		panel.add(choice_2);
 		
-		Choice choice_3 = new Choice();
-		choice_3.setBounds(187, 390, 353, 18);
-		panel.add(choice_3);
+		comboBox_Dept = new JComboBox();
+		comboBox_Dept.setBounds(187, 341, 282, 21);
+		panel.add(comboBox_Dept);
 		
-		Choice choice_4 = new Choice();
-		choice_4.setBounds(187, 435, 353, 18);
-		panel.add(choice_4);
+		String [] cen = {"(select)","Malabe", "Kandy", "Kurunagala","Colombo","Matara"};
+		comboBox_Center = new JComboBox(cen);
+		comboBox_Center.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(comboBox_Center.getSelectedItem().equals("Malabe")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Build.removeAllItems();
+					comboBox_Build.addItem("(select)");
+					comboBox_Build.addItem("New Building");
+					comboBox_Build.addItem("New CyberLab");
+					comboBox_Build.addItem("A501");
+					comboBox_Build.addItem("B7L2");
+					comboBox_Build.addItem("Architecture Building");
+
+					
+				}
+				else if(comboBox_Center.getSelectedItem().equals("Kandy")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Build.removeAllItems();
+					comboBox_Build.addItem("(select)");
+					comboBox_Build.addItem("301");
+					comboBox_Build.addItem("302");
+					comboBox_Build.addItem("201 Lab");
+					
+					}
+				else if(comboBox_Center.getSelectedItem().equals("Kurunagala")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Build.removeAllItems();
+					comboBox_Build.addItem("(select)");
+					comboBox_Build.addItem("IT Building");
+					comboBox_Build.addItem("New SoftwareLab");
+					comboBox_Build.addItem("Electrical Lab");
+					
+				}
+				else if(comboBox_Center.getSelectedItem().equals("Colombo")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Build.removeAllItems();
+					comboBox_Build.addItem("(select)");
+					comboBox_Build.addItem("BM New");
+					comboBox_Build.addItem("IT Old");
+					comboBox_Build.addItem("Physical lab");					
+			}
+				
+				
+			}
+			
+		});
+		comboBox_Center.setBounds(187, 388, 282, 21);
+		panel.add(comboBox_Center);
+		
+		comboBox_Build = new JComboBox();
+		comboBox_Build.setBounds(187, 433, 282, 21);
+		panel.add(comboBox_Build);
+	
+		
+		String [] level = {"(select)", "1", "2", "3", "4", "5","6"};
+		comboBox_Lev = new JComboBox(level);
+		comboBox_Lev.setBounds(187, 139, 282, 21);
+		panel.add(comboBox_Lev);
+		
+		JLabel lblNewLabel_name_required = new JLabel("");
+		lblNewLabel_name_required.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_name_required.setForeground(Color.RED);
+		lblNewLabel_name_required.setBounds(187, 66, 282, 13);
+		panel.add(lblNewLabel_name_required);
+		
+		JLabel lblNewLabel_ID_required = new JLabel("");
+		lblNewLabel_ID_required.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_ID_required.setForeground(Color.RED);
+		lblNewLabel_ID_required.setBounds(187, 114, 282, 13);
+		panel.add(lblNewLabel_ID_required);
+		
+		
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(204, 204, 255));
@@ -260,40 +423,40 @@ public class Lecturer extends JFrame {
 		lblNewLabel_2_2_1_2.setBounds(25, 80, 154, 24);
 		panel_1.add(lblNewLabel_2_2_1_2);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(213, 78, 282, 26);
-		panel_1.add(textField);
+		monday = new JTextField();
+		monday.setColumns(10);
+		monday.setBounds(213, 78, 282, 26);
+		panel_1.add(monday);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(213, 125, 282, 26);
-		panel_1.add(textField_4);
+		tuesday = new JTextField();
+		tuesday.setColumns(10);
+		tuesday.setBounds(213, 125, 282, 26);
+		panel_1.add(tuesday);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(213, 172, 282, 26);
-		panel_1.add(textField_5);
+		wednesday = new JTextField();
+		wednesday.setColumns(10);
+		wednesday.setBounds(213, 172, 282, 26);
+		panel_1.add(wednesday);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(213, 219, 282, 26);
-		panel_1.add(textField_6);
+		thursday = new JTextField();
+		thursday.setColumns(10);
+		thursday.setBounds(213, 219, 282, 26);
+		panel_1.add(thursday);
 		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(213, 266, 282, 26);
-		panel_1.add(textField_7);
+		friday = new JTextField();
+		friday.setColumns(10);
+		friday.setBounds(213, 266, 282, 26);
+		panel_1.add(friday);
 		
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(213, 313, 282, 26);
-		panel_1.add(textField_8);
+		saturday = new JTextField();
+		saturday.setColumns(10);
+		saturday.setBounds(213, 313, 282, 26);
+		panel_1.add(saturday);
 		
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(213, 362, 282, 26);
-		panel_1.add(textField_9);
+		sunday = new JTextField();
+		sunday.setColumns(10);
+		sunday.setBounds(213, 362, 282, 26);
+		panel_1.add(sunday);
 		
 		JLabel lblNewLabel_2_2_1_2_1 = new JLabel("Sunday");
 		lblNewLabel_2_2_1_2_1.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -332,11 +495,85 @@ public class Lecturer extends JFrame {
 		panellec.add(lblNewLabel_2_1);
 		
 		JButton btnNewButtonSavelec = new JButton("ADD");
+		btnNewButtonSavelec.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String lec_name = textField_lecName.getText();
+				String lec_id_emp = textField_empID.getText();
+				String level =(String)comboBox_Lev.getSelectedItem();
+				String rank = textField_rank.getText();
+				String fac = (String)comboBox_Faculty.getSelectedItem();
+				String dep = (String)comboBox_Dept.getSelectedItem();
+				String cent = (String)comboBox_Center.getSelectedItem();
+				String build = (String)comboBox_Build.getSelectedItem();
+				String mon = monday.getText();
+				String tue = tuesday.getText();
+				String wedn = wednesday.getText();
+				String thurs = thursday.getText();
+				String fri = friday.getText();
+				String sat = saturday.getText();
+				String sun = sunday.getText();
+				
+				if(textField_lecName.getText().trim().isEmpty() && textField_empID.getText().trim().isEmpty()) {
+					lblNewLabel_name_required.setText("Lecturer's name is required!");
+					lblNewLabel_ID_required.setText("Lecturer's Employee ID Number is required!");
+				}
+				
+				else if(textField_lecName.getText().trim().isEmpty()) {
+					lblNewLabel_name_required.setText("Lecturer's name is required!");
+                }
+                else if(textField_empID.getText().trim().isEmpty()) {
+                	lblNewLabel_ID_required.setText("Lecturer's Employee ID Number is required!");
+                }
+				
+                else {
+                try {
+                	Class.forName("com.mysql.cj.jdbc.Driver");
+			       Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+                   String query = "INSERT INTO lecturer values(0,'" + lec_name + "','" + lec_id_emp + "','" + level + "','" + rank + "','"+fac+"','"+dep+"','"+cent+"','"+build+"','" + mon + "','" + tue + "','" + wedn + "','"+thurs+"','"+fri+"','"+sat+"','"+sun+"')";                                                                                                       
+                   Statement sta = connection.createStatement();
+                   int x = sta.executeUpdate(query);
+                   
+                   connection.close();
+                   JOptionPane.showMessageDialog(null, "Inserted Successfully");
+                   lblNewLabel_name_required.setText("");
+					lblNewLabel_ID_required.setText("");
+                   
+
+               } catch (Exception exception) {
+               	
+                   exception.printStackTrace();
+               }
+			
+			}
+			}
+		});
 		btnNewButtonSavelec.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButtonSavelec.setBounds(944, 539, 101, 37);
 		panellec.add(btnNewButtonSavelec);
 		
 		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				textField_lecName.setText("");
+				textField_empID.setText("");
+				comboBox_Lev.setSelectedItem("(select)");
+				textField_rank.setText("");
+				comboBox_Faculty.setSelectedItem("(select)");
+				comboBox_Dept.setSelectedItem("(select)");
+				comboBox_Center.setSelectedItem("(select)");
+				comboBox_Build.setSelectedItem("(select)");
+				monday.setText("");
+				tuesday.setText("");
+				wednesday.setText("");
+				thursday.setText("");
+				friday.setText("");
+				saturday.setText("");
+				sunday.setText("");
+			}
+		});
 		btnClear.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnClear.setBounds(1090, 539, 101, 37);
 		panellec.add(btnClear);
@@ -382,26 +619,35 @@ public class Lecturer extends JFrame {
 		lblNewLabel_2_2_5_2.setBounds(21, 225, 209, 24);
 		panelLecDetail.add(lblNewLabel_2_2_5_2);
 		
-		textFieldName = new JTextField();
-		textFieldName.setColumns(10);
-		textFieldName.setBounds(187, 40, 221, 26);
-		panelLecDetail.add(textFieldName);
+		textFieldName_1 = new JTextField();
+		textFieldName_1.setColumns(10);
+		textFieldName_1.setBounds(187, 40, 221, 26);
+		panelLecDetail.add(textFieldName_1);
 		
-		textFieldEmpID = new JTextField();
-		textFieldEmpID.setColumns(10);
-		textFieldEmpID.setBounds(187, 89, 221, 26);
-		panelLecDetail.add(textFieldEmpID);
+		textFieldEmpID_1 = new JTextField();
+		textFieldEmpID_1.setColumns(10);
+		textFieldEmpID_1.setBounds(187, 89, 221, 26);
+		panelLecDetail.add(textFieldEmpID_1);
 		
 		JLabel lblNewLabel_2_2_1_1_2 = new JLabel("Level");
 		lblNewLabel_2_2_1_1_2.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_2_2_1_1_2.setBounds(21, 135, 93, 24);
 		panelLecDetail.add(lblNewLabel_2_2_1_1_2);
 		
-		Choice choiceLevel = new Choice();
-		choiceLevel.setBounds(187, 141, 275, 18);
-		panelLecDetail.add(choiceLevel);
-		
 		JButton btnNewButtongeneraterankNew = new JButton("Generate Rank");
+		btnNewButtongeneraterankNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String empid2 = (String)textFieldEmpID_1.getText();
+				String levelS2 = (String)comboBox_Lev2.getSelectedItem();
+				
+				
+					String rankString2 = levelS2+"."+empid2;
+					textFieldupdaterank.setText(rankString2);
+					
+				
+			}
+		});
 		btnNewButtongeneraterankNew.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButtongeneraterankNew.setBounds(89, 184, 243, 31);
 		panelLecDetail.add(btnNewButtongeneraterankNew);
@@ -416,65 +662,345 @@ public class Lecturer extends JFrame {
 		lblNewLabel_2_2_5_1_1.setBounds(21, 271, 149, 24);
 		panelLecDetail.add(lblNewLabel_2_2_5_1_1);
 		
-		Choice choiceFac = new Choice();
-		choiceFac.setBounds(187, 277, 275, 18);
-		panelLecDetail.add(choiceFac);
-		
-		Choice choiceDept = new Choice();
-		choiceDept.setBounds(188, 320, 275, 18);
-		panelLecDetail.add(choiceDept);
-		
-		Choice choiceCent = new Choice();
-		choiceCent.setBounds(188, 362, 275, 18);
-		panelLecDetail.add(choiceCent);
-		
-		Choice choiceBuild = new Choice();
-		choiceBuild.setBounds(188, 405, 275, 18);
-		panelLecDetail.add(choiceBuild);
-		
 		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String lec_name = textFieldName_1.getText();
+				String lec_id = textFieldEmpID_1.getText();
+				String level = (String)comboBox_Lev2.getSelectedItem();
+				String rank = textFieldupdaterank.getText();
+				String facString = (String)comboBox_Fac2.getSelectedItem();
+				String deptString = (String)comboBox_Dept2.getSelectedItem();
+				String centString = (String)comboBox_Cent2.getSelectedItem();
+				String buildString = (String)comboBox_Build2.getSelectedItem();
+
+				int selectedRow = table_lecturer.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table_lecturer.getModel();
+			     String id =(model.getValueAt(selectedRow, 0).toString());
+				
+				try {
+			    	 
+			         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+			         String query = "UPDATE lecturer set lecturer_name='"+lec_name+"', lecturer_ID='"+lec_id+"', lecturer_level='"+level+"', lecturer_rank='"+rank+"', faculty = '"+facString+"' , department = '"+deptString+"', center = '"+centString+"', building = '"+buildString+"'where id="+id;
+			     
+			         PreparedStatement pst = connection.prepareStatement(query);
+			        
+			         int x = pst.executeUpdate(query);
+			         
+			         connection.close();
+			         JOptionPane.showMessageDialog(null, "Updated Successfully");
+			     } catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+				
+				//int selectedRow=table.getSelectedRow();
+                DefaultTableModel model1=(DefaultTableModel) table_lecturer.getModel();
+				//String id=(model.getValueAt(selectedRow, 0).toString());
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                    String query = "select id, lecturer_name, lecturer_ID, lecturer_level, lecturer_rank, faculty, department, center, building from lecturer";
+                    Statement sta = connection.createStatement();
+                    ResultSet rs1 = sta.executeQuery(query);
+                    
+                    table_lecturer.setModel(DbUtils.resultSetToTableModel(rs1));
+                    connection.close();
+                                       
+                } catch (Exception exception) {
+                	
+                    exception.printStackTrace();
+                }
+				
+			}
+		});
 		btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnUpdate.setBounds(21, 464, 106, 31);
+		btnUpdate.setBounds(21, 453, 106, 31);
 		panelLecDetail.add(btnUpdate);
 		
 		JButton btnClear_1 = new JButton("Clear");
+		btnClear_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				textFieldName_1.setText("");
+				textFieldEmpID_1.setText("");
+				comboBox_Lev2.setSelectedItem("(select)");
+				textFieldupdaterank.setText("");
+				comboBox_Fac2.setSelectedItem("(select)");
+				comboBox_Dept2.setSelectedItem("(select)");
+				comboBox_Cent2.setSelectedItem("(select)");
+				comboBox_Build2.setSelectedItem("(select)");
+			}
+		});
 		btnClear_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnClear_1.setBounds(302, 464, 106, 31);
+		btnClear_1.setBounds(302, 453, 106, 31);
 		panelLecDetail.add(btnClear_1);
 		
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int selectedRow = table_lecturer.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table_lecturer.getModel();
+			     String id =(model.getValueAt(selectedRow, 0).toString());
+			     
+				
+				try {
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+					
+					String sql = "DELETE  FROM lecturer WHERE id = "+id;
+					PreparedStatement pst = connection.prepareStatement(sql);
+			        int rs=pst.executeUpdate(sql);
+			        
+			        connection.close();
+	                   JOptionPane.showMessageDialog(null, "Deleted Successfully");
+ 
+	               }
+				catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                   Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                   String query = "select id, lecturer_name, lecturer_ID, lecturer_level, lecturer_rank, faculty, department, center, building from lecturer";
+                   Statement sta = connection.createStatement();
+                   ResultSet rs1 = sta.executeQuery(query);
+                   
+                   table_lecturer.setModel(DbUtils.resultSetToTableModel(rs1));
+                   connection.close();
+                   
+                   
+                   
+               } catch (Exception exception) {
+               	
+                   exception.printStackTrace();
+               }
+				textFieldName_1.setText("");
+				textFieldEmpID_1.setText("");
+				comboBox_Lev2.setSelectedItem("(select)");
+				textFieldupdaterank.setText("");
+				comboBox_Fac2.setSelectedItem("(select)");
+				comboBox_Dept2.setSelectedItem("(select)");
+				comboBox_Cent2.setSelectedItem("(select)");
+				comboBox_Build2.setSelectedItem("(select)");
+				
+			}
+		});
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnDelete.setBounds(161, 464, 106, 31);
+		btnDelete.setBounds(162, 453, 106, 31);
 		panelLecDetail.add(btnDelete);
 		
+		String [] fac2 = {"(select)", "IT", "Engineering", "Business Management", "Humanities & Sciences"};
+		comboBox_Fac2 = new JComboBox(fac2);
+		comboBox_Fac2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(comboBox_Fac2.getSelectedItem().equals("IT")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Dept.removeAllItems();
+					comboBox_Dept.addItem("(select)");
+					comboBox_Dept.addItem("IT");
+					comboBox_Dept.addItem("CSSE");
+					comboBox_Dept.addItem("CSE");
+					
+				}
+				else if(comboBox_Fac2.getSelectedItem().equals("Engineering")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Dept2.removeAllItems();
+					comboBox_Dept2.addItem("(select)");
+					comboBox_Dept2.addItem("Mechanical E");
+					comboBox_Dept2.addItem("Electronic E");
+					comboBox_Dept2.addItem("Materials E");
+					comboBox_Dept2.addItem("Civil E");
+					comboBox_Dept2.addItem("QS");
+					}
+				else if(comboBox_Fac2.getSelectedItem().equals("Business Management")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Dept2.removeAllItems();
+					comboBox_Dept2.addItem("(select)");
+					comboBox_Dept2.addItem("Accounting & Finance");
+					comboBox_Dept2.addItem("Management");
+					comboBox_Dept2.addItem("Marketing");
+					
+				}
+				else if(comboBox_Fac2.getSelectedItem().equals("Humanities & Sciences")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Dept2.removeAllItems();
+					comboBox_Dept2.addItem("(select)");
+					comboBox_Dept2.addItem("English");
+					comboBox_Dept2.addItem("Nursing");
+					comboBox_Dept2.addItem("Law");
+					comboBox_Dept2.addItem("Physical Sciences");					
+			}
+			}
+				
+			
+		});
+		comboBox_Fac2.setBounds(187, 275, 221, 21);
+		panelLecDetail.add(comboBox_Fac2);
+		
+		comboBox_Dept2 = new JComboBox();
+		comboBox_Dept2.setBounds(187, 318, 221, 21);
+		panelLecDetail.add(comboBox_Dept2);
+		
+		String [] cen2 = { "(select)","Malabe", "Kandy", "Kurunagala","Colombo","Matara"};
+		comboBox_Cent2 = new JComboBox(cen2);
+		comboBox_Cent2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(comboBox_Cent2.getSelectedItem().equals("Malabe")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Build2.removeAllItems();
+					comboBox_Build2.addItem("(select)");
+					comboBox_Build2.addItem("New Building");
+					comboBox_Build2.addItem("New CyberLab");
+					comboBox_Build2.addItem("A501");
+					comboBox_Build2.addItem("B7L2");
+					comboBox_Build2.addItem("Architecture Building");
+
+					
+				}
+				else if(comboBox_Cent2.getSelectedItem().equals("Kandy")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Build2.removeAllItems();
+					comboBox_Build2.addItem("(select)");
+					comboBox_Build2.addItem("301");
+					comboBox_Build2.addItem("302");
+					comboBox_Build2.addItem("201 Lab");
+					
+					}
+				else if(comboBox_Cent2.getSelectedItem().equals("Kurunagala")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Build2.removeAllItems();
+					comboBox_Build2.addItem("(select)");
+					comboBox_Build2.addItem("IT Building");
+					comboBox_Build2.addItem("New SoftwareLab");
+					comboBox_Build2.addItem("Electrical Lab");
+					
+				}
+				else if(comboBox_Cent2.getSelectedItem().equals("Colombo")) {
+					
+					//comboBox_dept.setSelectedItem(null);
+					comboBox_Build2.removeAllItems();
+					comboBox_Build2.addItem("(select)");
+					comboBox_Build2.addItem("BM New");
+					comboBox_Build2.addItem("IT Old");
+					comboBox_Build2.addItem("Physical lab");					
+			}
+				
+				
+			}
+		});
+		comboBox_Cent2.setBounds(187, 360, 221, 21);
+		panelLecDetail.add(comboBox_Cent2);
+		
+		comboBox_Build2 = new JComboBox();
+		comboBox_Build2.setBounds(187, 403, 221, 21);
+		panelLecDetail.add(comboBox_Build2);
+		
+		String [] level2 = {"(select)", "1", "2", "3", "4", "5","6"};
+		comboBox_Lev2 = new JComboBox(level2);
+		comboBox_Lev2.setBounds(187, 139, 221, 21);
+		panelLecDetail.add(comboBox_Lev2);
+		
 		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//int selectedRow=table.getSelectedRow();
+                DefaultTableModel model=(DefaultTableModel) table_lecturer.getModel();
+				//String id=(model.getValueAt(selectedRow, 0).toString());
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                    String query = "select id, lecturer_name, lecturer_ID, lecturer_level, lecturer_rank, faculty, department, center, building from lecturer";
+                    Statement sta = connection.createStatement();
+                    ResultSet rs1 = sta.executeQuery(query);
+                    
+                    table_lecturer.setModel(DbUtils.resultSetToTableModel(rs1));
+                    connection.close();
+                                       
+                } catch (Exception exception) {
+                	
+                    exception.printStackTrace();
+                }
+			}
+		});
 		btnRefresh.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnRefresh.setBounds(1188, 21, 106, 31);
 		panellecdetail.add(btnRefresh);
 		
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnSearch.setBounds(1188, 100, 106, 31);
-		panellecdetail.add(btnSearch);
-		
 		textFieldSeacrh = new JTextField();
+		textFieldSeacrh.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				try {
+					
+					 String search = textFieldSeacrh.getText();
+					
+					 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+			         String query = "SELECT id,lecturer_name,lecturer_ID,lecturer_level,lecturer_rank,faculty,department,center,building FROM lecturer where lecturer_name LIKE '%"+search+"%'";
+			     
+			         PreparedStatement pst = connection.prepareStatement(query);
+
+			         ResultSet rs=pst.executeQuery();
+			         table_lecturer.setModel(DbUtils.resultSetToTableModel(rs));
+			         
+
+					
+				}
+				catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+			}
+		});
 		textFieldSeacrh.setColumns(10);
-		textFieldSeacrh.setBounds(958, 102, 221, 31);
+		textFieldSeacrh.setBounds(954, 104, 221, 31);
 		panellecdetail.add(textFieldSeacrh);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(492, 164, 802, 406);
 		panellecdetail.add(scrollPane);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		table_lecturer = new JTable();
+		table_lecturer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				int selectedRow = table_lecturer.getSelectedRow();
+				DefaultTableModel model = (DefaultTableModel) table_lecturer.getModel();
+				
+				textFieldName_1.setText(model.getValueAt(selectedRow, 1).toString());
+				textFieldEmpID_1.setText(model.getValueAt(selectedRow, 2).toString());
+				comboBox_Lev2.setSelectedItem(model.getValueAt(selectedRow, 3).toString());;
+				textFieldupdaterank.setText(model.getValueAt(selectedRow, 4).toString());
+				comboBox_Fac2.setSelectedItem(model.getValueAt(selectedRow, 5).toString());;
+				comboBox_Dept2.setSelectedItem(model.getValueAt(selectedRow, 6).toString());;
+				comboBox_Cent2.setSelectedItem(model.getValueAt(selectedRow, 7).toString());;
+				comboBox_Build2.setSelectedItem(model.getValueAt(selectedRow, 8).toString());;
+			}
+		});
+		table_lecturer.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
 				"ID", "Name", "Emp ID", "Level", "Rank", "Faculty", "Department", "Center", "Building"
 			}
 		));
-		scrollPane.setViewportView(table);
+		scrollPane.setViewportView(table_lecturer);
 		
 		JLabel lblNewLabel_2_2_6_1 = new JLabel("Update / Delete Details");
 		lblNewLabel_2_2_6_1.setForeground(new Color(0, 0, 102));
@@ -487,6 +1013,12 @@ public class Lecturer extends JFrame {
 		lblNewLabel_2_2_6_2.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblNewLabel_2_2_6_2.setBounds(805, 65, 209, 24);
 		panellecdetail.add(lblNewLabel_2_2_6_2);
+		
+		JButton btnSearch = new JButton("Search");
+		btnSearch.setBackground(SystemColor.activeCaption);
+		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnSearch.setBounds(1188, 104, 106, 31);
+		panellecdetail.add(btnSearch);
 		
 		panelDayshours = new JPanel();
 		panelDayshours.setBackground(new Color(255, 255, 255));
@@ -507,7 +1039,7 @@ public class Lecturer extends JFrame {
 		
 		JLabel lblNewLabel_2_2_1_2_7 = new JLabel("Employee ID");
 		lblNewLabel_2_2_1_2_7.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_2_2_1_2_7.setBounds(73, 23, 106, 24);
+		lblNewLabel_2_2_1_2_7.setBounds(25, 23, 106, 24);
 		panel_1_1.add(lblNewLabel_2_2_1_2_7);
 		
 		textFieldMon = new JTextField();
@@ -576,23 +1108,96 @@ public class Lecturer extends JFrame {
 		panel_1_1.add(lblNewLabel_2_2_1_2_6_1);
 		
 		JButton btnUpdate_1 = new JButton("Update");
+		btnUpdate_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String monString = textFieldMon.getText();
+				String tueString = textFieldTue.getText();
+				String wedString = textFieldWed.getText();
+				String thurString = textFieldThurs.getText();
+				String friString = textFieldFri.getText();
+				String satString = textFieldSat.getText();
+				String sunString = textFieldSun.getText();
+
+				
+				int selectedRow = table_hours.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table_hours.getModel();
+			     String id =(model.getValueAt(selectedRow, 0).toString());
+				
+				try {
+			    	 
+			         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+			         String query = "UPDATE lecturer set monday='"+monString+"', tuesday='"+tueString+"', wednesday='"+wedString+"', thursday='"+thurString+"', friday = '"+friString+"' , saturday = '"+satString+"', sunday = '"+sunString+"'where lecturer_ID="+id;
+			     
+			         PreparedStatement pst = connection.prepareStatement(query);
+			        
+			         int x = pst.executeUpdate(query);
+			         
+			         connection.close();
+			         JOptionPane.showMessageDialog(null, "Updated Successfully");
+			     } catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                    String query = "select lecturer_ID as 'Lecturer ID', lecturer_name as 'Lecturer Name', monday, tuesday, wednesday, thursday, friday, saturday, sunday from lecturer";
+                    Statement sta = connection.createStatement();
+                    ResultSet rs1 = sta.executeQuery(query);
+                    
+                    table_hours.setModel(DbUtils.resultSetToTableModel(rs1));
+                    connection.close();
+                    
+                    
+                    
+                } catch (Exception exception) {
+                	
+                    exception.printStackTrace();
+                }
+				
+			}
+		});
 		btnUpdate_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnUpdate_1.setBounds(25, 467, 106, 31);
+		btnUpdate_1.setBounds(83, 455, 116, 31);
 		panel_1_1.add(btnUpdate_1);
 		
-		JButton btnClear_2 = new JButton("Clear");
-		btnClear_2.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnClear_2.setBounds(310, 467, 106, 31);
-		panel_1_1.add(btnClear_2);
+		JLabel lblNewLabel_empID = new JLabel("");
+		lblNewLabel_empID.setForeground(SystemColor.textInactiveText);
+		lblNewLabel_empID.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_empID.setBounds(25, 57, 106, 13);
+		panel_1_1.add(lblNewLabel_empID);
 		
-		JButton btnDelete_3 = new JButton("Delete");
-		btnDelete_3.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnDelete_3.setBounds(167, 467, 106, 31);
-		panel_1_1.add(btnDelete_3);
+		JLabel lblNewLabel_empName = new JLabel("");
+		lblNewLabel_empName.setForeground(SystemColor.textInactiveText);
+		lblNewLabel_empName.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_empName.setBounds(175, 57, 116, 13);
+		panel_1_1.add(lblNewLabel_empName);
+		
+		JButton btnClear_2 = new JButton("Clear");
+		btnClear_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				lblNewLabel_empID.setText("");
+				lblNewLabel_empName.setText("");
+				textFieldMon.setText("");
+				textFieldTue.setText("");
+				textFieldWed.setText("");
+				textFieldThurs.setText("");
+				textFieldFri.setText("");
+				textFieldSat.setText("");
+				textFieldSun.setText("");
+				
+			}
+		});
+		btnClear_2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnClear_2.setBounds(226, 455, 116, 31);
+		panel_1_1.add(btnClear_2);
 		
 		JLabel lblNewLabel_2_2_1_2_7_1 = new JLabel("Lecturer Name");
 		lblNewLabel_2_2_1_2_7_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_2_2_1_2_7_1.setBounds(242, 23, 116, 24);
+		lblNewLabel_2_2_1_2_7_1.setBounds(175, 23, 116, 24);
 		panel_1_1.add(lblNewLabel_2_2_1_2_7_1);
 		
 		JLabel lblNewLabel_2_2_1_2_7_2 = new JLabel("Monday");
@@ -600,52 +1205,110 @@ public class Lecturer extends JFrame {
 		lblNewLabel_2_2_1_2_7_2.setBounds(25, 117, 154, 24);
 		panel_1_1.add(lblNewLabel_2_2_1_2_7_2);
 		
-		textField_10 = new JTextField();
-		textField_10.setBackground(SystemColor.control);
-		textField_10.setBounds(56, 57, 143, 26);
-		panel_1_1.add(textField_10);
-		textField_10.setColumns(10);
 		
-		textField_11 = new JTextField();
-		textField_11.setBackground(SystemColor.control);
-		textField_11.setColumns(10);
-		textField_11.setBounds(226, 57, 143, 26);
-		panel_1_1.add(textField_11);
 		
 		JButton btnRefresh_1 = new JButton("Refresh");
+		btnRefresh_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//int selectedRow=table.getSelectedRow();
+                DefaultTableModel model2=(DefaultTableModel) table_hours.getModel();
+				//String id=(model.getValueAt(selectedRow, 0).toString());
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                    String query = "select lecturer_ID as 'Lecturer ID', lecturer_name as 'Lecturer Name', monday, tuesday, wednesday, thursday, friday, saturday, sunday from lecturer";
+                    Statement sta = connection.createStatement();
+                    ResultSet rs1 = sta.executeQuery(query);
+                    
+                    table_hours.setModel(DbUtils.resultSetToTableModel(rs1));
+                    connection.close();
+                    
+                } catch (Exception exception) {
+                	
+                    exception.printStackTrace();
+                }
+			}
+		});
 		btnRefresh_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnRefresh_1.setBounds(1188, 25, 106, 31);
 		panelDayshours.add(btnRefresh_1);
 		
 		JButton btnSearch_1 = new JButton("Search");
+		btnSearch_1.setBackground(SystemColor.activeCaption);
 		btnSearch_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnSearch_1.setBounds(1188, 96, 106, 31);
+		btnSearch_1.setBounds(1188, 108, 106, 31);
 		panelDayshours.add(btnSearch_1);
 		
 		textFieldSearchDays = new JTextField();
+		textFieldSearchDays.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				try {
+					
+					 String search2 = textFieldSearchDays.getText();
+					
+					 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+			         String query = "SELECT lecturer_ID, lecturer_name,monday,tuesday,wednesday,thursday,friday,saturday,sunday FROM lecturer where lecturer_name LIKE '%"+search2+"%'";
+			     
+			         PreparedStatement pst = connection.prepareStatement(query);
+
+			         ResultSet rs=pst.executeQuery();
+			         table_hours.setModel(DbUtils.resultSetToTableModel(rs));
+			         
+
+					
+				}
+				catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+				
+			}
+		});
 		textFieldSearchDays.setColumns(10);
-		textFieldSearchDays.setBounds(937, 96, 241, 31);
+		textFieldSearchDays.setBounds(937, 108, 241, 31);
 		panelDayshours.add(textFieldSearchDays);
 		
 		JLabel lblNewLabel_2_2_6_1_1_1 = new JLabel("Details of Active Days and Hours");
 		lblNewLabel_2_2_6_1_1_1.setForeground(new Color(0, 0, 102));
 		lblNewLabel_2_2_6_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblNewLabel_2_2_6_1_1_1.setBounds(659, 66, 366, 24);
+		lblNewLabel_2_2_6_1_1_1.setBounds(661, 62, 366, 24);
 		panelDayshours.add(lblNewLabel_2_2_6_1_1_1);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(487, 159, 790, 412);
+		scrollPane_1.setBounds(487, 169, 807, 402);
 		panelDayshours.add(scrollPane_1);
 		
-		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
+		table_hours = new JTable();
+		table_hours.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				int selectedRow = table_hours.getSelectedRow();
+				DefaultTableModel model = (DefaultTableModel) table_hours.getModel();
+				
+				lblNewLabel_empID.setText(model.getValueAt(selectedRow, 0).toString());
+				lblNewLabel_empName.setText(model.getValueAt(selectedRow, 1).toString());
+				textFieldMon.setText(model.getValueAt(selectedRow, 2).toString());
+				textFieldTue.setText(model.getValueAt(selectedRow, 3).toString());
+				textFieldWed.setText(model.getValueAt(selectedRow, 4).toString());
+				textFieldThurs.setText(model.getValueAt(selectedRow, 5).toString());
+				textFieldFri.setText(model.getValueAt(selectedRow, 6).toString());
+				textFieldSat.setText(model.getValueAt(selectedRow, 7).toString());
+				textFieldSun.setText(model.getValueAt(selectedRow, 8).toString());
+				
+			}
+		});
+		table_hours.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
 				"Emp ID", "Lecturer Name", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
 			}
 		));
-		scrollPane_1.setViewportView(table_1);
+		scrollPane_1.setViewportView(table_hours);
 		
 		JButton btnNewButtonAddlec = new JButton("Add Lecturer Details");
 		btnNewButtonAddlec.addActionListener(new ActionListener() {

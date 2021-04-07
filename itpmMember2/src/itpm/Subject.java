@@ -20,9 +20,6 @@ import javax.swing.JOptionPane;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
@@ -37,6 +34,10 @@ import net.proteanit.sql.DbUtils;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
+import java.awt.SystemColor;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.ButtonGroup;
 
 public class Subject extends JFrame {
 
@@ -49,11 +50,14 @@ public class Subject extends JFrame {
 	private JTextField textField_2Name;
 	private JTextField textField_3Code;
 	private JTable table;
+	private JComboBox combotype;
+	private JComboBox comboBox_offeredyear;
 	private JTextField textFieldSearchSub;
 	private JRadioButton rdbtnNewRadioButton_2;
 	private JRadioButton rdbtnNewRadioButton_3;
 	private JRadioButton rdbtnNewRadioButton_1;
 	private JRadioButton rdbtnNewRadioButton;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 	/**
 	 * Launch the application.
 	 */
@@ -194,29 +198,21 @@ public class Subject extends JFrame {
 		lblNewLabel_3_4_2.setBounds(566, 203, 229, 19);
 		panel.add(lblNewLabel_3_4_2);
 		
-		JLabel lblNewLabel_3_4_2_1 = new JLabel("Number of Evaluation");
+		JLabel lblNewLabel_3_4_2_1 = new JLabel("Number of Evaluation Hours");
 		lblNewLabel_3_4_2_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_3_4_2_1.setBounds(566, 279, 229, 19);
 		panel.add(lblNewLabel_3_4_2_1);
 		
-		Choice choice = new Choice();
-		choice.setBounds(250, 204, 288, 18);
-		panel.add(choice);
-		choice.add("1st year");
-		choice.add("2nd year");
-		choice.add("3rd year");
-		choice.add("4th year");
 		
 		
-		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("1st Semester");
+		rdbtnNewRadioButton = new JRadioButton("1st Semester");
 		rdbtnNewRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				/*if (rdbtnNewRadioButton.isSelected())
+				if (rdbtnNewRadioButton.isSelected())
 				{
 					rdbtnNewRadioButton_1.setSelected(false);
-				}*/
+				}
 				
 			}
 		});
@@ -225,7 +221,7 @@ public class Subject extends JFrame {
 		rdbtnNewRadioButton.setBounds(250, 277, 103, 21);
 		panel.add(rdbtnNewRadioButton);
 		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("2nd Semester");
+		rdbtnNewRadioButton_1 = new JRadioButton("2nd Semester");
 		rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -257,6 +253,24 @@ public class Subject extends JFrame {
 		spinnerEva.setBounds(805, 272, 237, 26);
 		panel.add(spinnerEva);
 		
+		JLabel subject_name_required = new JLabel("");
+		subject_name_required.setForeground(new Color(255, 0, 0));
+		subject_name_required.setFont(new Font("Tahoma", Font.BOLD, 12));
+		subject_name_required.setBounds(250, 90, 208, 13);
+		panel.add(subject_name_required);
+		
+		JLabel subject_code_required_1 = new JLabel("");
+		subject_code_required_1.setForeground(Color.RED);
+		subject_code_required_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		subject_code_required_1.setBounds(250, 163, 208, 13);
+		panel.add(subject_code_required_1);
+		
+		JLabel offered_year_required_ = new JLabel("");
+		offered_year_required_.setForeground(Color.RED);
+		offered_year_required_.setFont(new Font("Tahoma", Font.BOLD, 12));
+		offered_year_required_.setBounds(250, 231, 208, 13);
+		panel.add(offered_year_required_);
+		
 		
 		JButton btnNewButton_2 = new JButton("Add Subject");
 		btnNewButton_2.addActionListener(new ActionListener() {
@@ -264,37 +278,50 @@ public class Subject extends JFrame {
 				
 				String sub_name = textFieldName.getText();
 				String sub_code = textField_1code.getText();
-				String Offered_year = choice.getSelectedItem();
+				String offerd_year1 =(String)comboBox_offeredyear.getSelectedItem();
 				String offered_sem = null;
                 if(rdbtnNewRadioButton.isSelected()) 
                 	offered_sem="1st Semester";
                 else {
                 	offered_sem="2nd Semester";
-                }
-                
+                }                
                 int No_of_lecHours = (int) spinnerLec.getValue();
                 int No_of_tuteHours = (int) spinnerTute.getValue();
                 int No_of_labHours = (int) spinnerLab.getValue();
                 int No_of_evaHours = (int) spinnerEva.getValue();
-                
-                try {
-                	Class.forName("com.mysql.cj.jdbc.Driver");
-			       Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                    				
+                    if(textFieldName.getText().trim().isEmpty() && textField_1code.getText().trim().isEmpty())
+                    {
+                        subject_name_required.setText("Subject Name is required !"); 
+                        subject_code_required_1.setText("Subject Code is required !");                    	
+                    }
+                    else if(textFieldName.getText().trim().isEmpty()) {
+                    	subject_code_required_1.setText("Subject Name is required !");}
+                    
+                    else if(textField_1code.getText().trim().isEmpty()) {
+                    	subject_code_required_1.setText("Subject Code is required !");}
+                    
+                    else {
+                    
+                    try {
+                    	Class.forName("com.mysql.cj.jdbc.Driver");
+    			       Connection connection2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
 
-                   String query = "INSERT INTO subject values(000,'" + sub_name + "','" + sub_code + "','" + Offered_year + "','" + offered_sem + "','"+No_of_lecHours+"','"+No_of_tuteHours+"','"+No_of_labHours+"','"+No_of_evaHours+"')";                                                                                                       
-                   Statement sta = connection.createStatement();
-                   int x = sta.executeUpdate(query);
-                   
-                   connection.close();
-                   JOptionPane.showMessageDialog(null, "Inserted Successfully");
-                   
-
-               } catch (Exception exception) {
-               	
-                   exception.printStackTrace();
-               }
-                
-				
+                       String query = "INSERT INTO subject values(000,'" + sub_name + "','" + sub_code + "','" + offerd_year1 + "','" + offered_sem + "','"+No_of_lecHours+"','"+No_of_tuteHours+"','"+No_of_labHours+"','"+No_of_evaHours+"')";                                                                                                       
+                       Statement sta = connection2.createStatement();
+                       int x = sta.executeUpdate(query);
+                       
+                       JOptionPane.showMessageDialog(null, "Inserted Successfully");
+                       subject_name_required.setText(""); 
+                       subject_code_required_1.setText(""); 
+                       connection2.close();
+                                          
+                   } catch (Exception exception) {
+                   	
+                       exception.printStackTrace();
+                       JOptionPane.showMessageDialog(null, "Already Exist");
+                   }
+                    }							
 			}
 		});
 		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -304,14 +331,25 @@ public class Subject extends JFrame {
 		JButton btnNewButton_2_1 = new JButton("Clear Fields");
 		btnNewButton_2_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				textFieldName.setText("");
+				textField_1code.setText("");
+				comboBox_offeredyear.setSelectedItem("(select)");
+				spinnerLec.setValue(0);
+				spinnerLab.setValue(0);
+				spinnerTute.setValue(0);
+				spinnerEva.setValue(0);
 			}
 		});
 		btnNewButton_2_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButton_2_1.setBounds(566, 363, 135, 33);
 		panel.add(btnNewButton_2_1);
 		
-		
-		
+		String[] offered_year = {"(select)","1st year", "2nd Year", "3rd Year", "4th Year"}; 
+		comboBox_offeredyear = new JComboBox(offered_year);
+		comboBox_offeredyear.setBounds(250, 198, 231, 21);
+		panel.add(comboBox_offeredyear);
+	
 		JLabel lblNewLabel_2 = new JLabel("Add Subjects");
 		lblNewLabel_2.setForeground(new Color(0, 0, 102));
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 19));
@@ -339,11 +377,108 @@ public class Subject extends JFrame {
 		lblEvaluationHours.setBounds(25, 381, 157, 19);
 		panel_1.add(lblEvaluationHours);
 		
+		rdbtnNewRadioButton_2 = new JRadioButton("1st Semester");
+		buttonGroup.add(rdbtnNewRadioButton_2);
+		rdbtnNewRadioButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (rdbtnNewRadioButton_2.isSelected())
+				{
+					rdbtnNewRadioButton_3.setSelected(false);
+				}
+			}
+		});
+		rdbtnNewRadioButton_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		rdbtnNewRadioButton_2.setBackground(new Color(204, 204, 255));
+		rdbtnNewRadioButton_2.setBounds(172, 164, 103, 21);
+		panel_1.add(rdbtnNewRadioButton_2);
+		
+		rdbtnNewRadioButton_3 = new JRadioButton("2nd Semester");
+		buttonGroup.add(rdbtnNewRadioButton_3);
+		rdbtnNewRadioButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (rdbtnNewRadioButton_3.isSelected())
+				{
+					rdbtnNewRadioButton_2.setSelected(false);
+				}
+			}
+		});
+		rdbtnNewRadioButton_3.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		rdbtnNewRadioButton_3.setBackground(new Color(204, 204, 255));
+		rdbtnNewRadioButton_3.setBounds(172, 197, 103, 21);
+		panel_1.add(rdbtnNewRadioButton_3);
+		
+		JSpinner spinner_1 = new JSpinner();
+		spinner_1.setBounds(172, 381, 206, 20);
+		panel_1.add(spinner_1);
+		
+		JSpinner spinner_1_1 = new JSpinner();
+		spinner_1_1.setBounds(172, 337, 206, 20);
+		panel_1.add(spinner_1_1);
+		
+		JSpinner spinner_1_2 = new JSpinner();
+		spinner_1_2.setBounds(172, 291, 206, 20);
+		panel_1.add(spinner_1_2);
+		
+		JSpinner spinner_1_3 = new JSpinner();
+		spinner_1_3.setBounds(172, 247, 206, 20);
+		panel_1.add(spinner_1_3);
+		
 		JButton btnNewButtUpdate = new JButton("Update");
 		btnNewButtUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				String sub_name = textField_2Name.getText();
+				String code = textField_3Code.getText();
+			    String ctype =(String)combotype.getSelectedItem();
+				String sem = null;
+                if(rdbtnNewRadioButton_2.isSelected()) 
+                    sem="1st Semester";
+                else if(rdbtnNewRadioButton_3.isSelected()) 
+                        sem="2nd Semester";
+			     int spinnerLect = (int) spinner_1_3.getValue();
+			     int spinnerLabs = (int) spinner_1_2.getValue();
+			     int spinnerTute = (int) spinner_1_1.getValue();
+			     int spinnerEval = (int) spinner_1.getValue();
+			     String driverName = "com.mysql.cj.jdbc.Driver";
+			     
+			     int selectedRow = table.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table.getModel();
+			     String id =(model.getValueAt(selectedRow, 0).toString());
+			     
+			     try {
+			    	 
+			         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+			         String query = "UPDATE subject set sub_name='"+sub_name+"', sub_code='"+code+"', offered_year='"+ctype+"', offered_sem='"+sem+"', num_lecHours = '"+spinnerLect+"' , num_labHours = '"+spinnerLabs+"', num_tuteHours = '"+spinnerTute+"', num_evaHours = '"+spinnerEval+"'where id="+id;
+			     
+			         PreparedStatement pst = connection.prepareStatement(query);
+			        
+			         int x = pst.executeUpdate(query);
+			         
+			         connection.close();
+			         JOptionPane.showMessageDialog(null, "Updated Successfully");
+			     } catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+			     
+			     try {
+						Class.forName("com.mysql.cj.jdbc.Driver");
+	                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+	                    String query = "select * from subject";
+	                    Statement sta = connection.createStatement();
+	                    ResultSet rs1 = sta.executeQuery(query);
+	                    
+	                    table.setModel(DbUtils.resultSetToTableModel(rs1));
+	                    connection.close();
+	                    
+	                    
+	                    
+	                } catch (Exception exception) {
+	                	
+	                    exception.printStackTrace();
+	                }
 			}
 		});
 		btnNewButtUpdate.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -351,6 +486,19 @@ public class Subject extends JFrame {
 		panel_1.add(btnNewButtUpdate);
 		
 		JButton btnNewButtClear = new JButton("Clear");
+		btnNewButtClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				textField_2Name.setText("");
+				textField_3Code.setText("");
+				combotype.setSelectedItem("(select)");
+				spinner_1.setValue(0);
+				spinner_1_1.setValue(0);
+				spinner_1_2.setValue(0);
+				spinner_1_3.setValue(0);
+				
+			}
+		});
 		btnNewButtClear.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButtClear.setBounds(293, 435, 85, 33);
 		panel_1.add(btnNewButtClear);
@@ -406,21 +554,7 @@ public class Subject extends JFrame {
 		lblTutorialHours.setBounds(25, 337, 157, 19);
 		panel_1.add(lblTutorialHours);
 		
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(172, 381, 206, 20);
-		panel_1.add(spinner_1);
 		
-		JSpinner spinner_1_1 = new JSpinner();
-		spinner_1_1.setBounds(172, 337, 206, 20);
-		panel_1.add(spinner_1_1);
-		
-		JSpinner spinner_1_2 = new JSpinner();
-		spinner_1_2.setBounds(172, 291, 206, 20);
-		panel_1.add(spinner_1_2);
-		
-		JSpinner spinner_1_3 = new JSpinner();
-		spinner_1_3.setBounds(172, 247, 206, 20);
-		panel_1.add(spinner_1_3);
 		
 		JLabel lblLabHours = new JLabel("Lab Hours");
 		lblLabHours.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -457,38 +591,8 @@ public class Subject extends JFrame {
 		lblNewLabelSub_1_1_1.setBounds(25, 163, 137, 19);
 		panel_1.add(lblNewLabelSub_1_1_1);
 		
-		rdbtnNewRadioButton_2 = new JRadioButton("1st Semester");
-		rdbtnNewRadioButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if (rdbtnNewRadioButton_2.isSelected())
-				{
-					rdbtnNewRadioButton_3.setSelected(false);
-				}
-			}
-		});
-		rdbtnNewRadioButton_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		rdbtnNewRadioButton_2.setBackground(new Color(204, 204, 255));
-		rdbtnNewRadioButton_2.setBounds(172, 164, 103, 21);
-		panel_1.add(rdbtnNewRadioButton_2);
-		
-		rdbtnNewRadioButton_3 = new JRadioButton("2nd Semester");
-		rdbtnNewRadioButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if (rdbtnNewRadioButton_3.isSelected())
-				{
-					rdbtnNewRadioButton_2.setSelected(true);
-				}
-			}
-		});
-		rdbtnNewRadioButton_3.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		rdbtnNewRadioButton_3.setBackground(new Color(204, 204, 255));
-		rdbtnNewRadioButton_3.setBounds(172, 197, 103, 21);
-		panel_1.add(rdbtnNewRadioButton_3);
-		
-		String [] type = { "1st year", "2nd Year", "3rd Year", "4th Year"};
-		JComboBox combotype = new JComboBox(type);
+		String [] type = {"(select)", "1st year", "2nd Year", "3rd Year", "4th Year"};
+		combotype = new JComboBox(type);
 		combotype.setBounds(172, 120, 206, 21);
 		panel_1.add(combotype);
 		
@@ -529,6 +633,7 @@ public class Subject extends JFrame {
 		panelSubDetail.add(btnRefresh);
 		
 		JButton btnSearch = new JButton("Search");
+		btnSearch.setBackground(SystemColor.activeCaption);
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnSearch.setBounds(1209, 93, 98, 33);
 		panelSubDetail.add(btnSearch);
@@ -542,41 +647,12 @@ public class Subject extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				/*try {
-			         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
-                   Statement sta = connection.createStatement();
-                   int row = table.getSelectedRow();
-                   DefaultTableModel model=(DefaultTableModel) table.getModel();
-   				   String selection = table.getModel().getValueAt(row, 0).toString();
-                   String sqlquery = "select * from subject where id = "+selection;
-                   ResultSet rs1 = sta.executeQuery(sqlquery);
-                   
-                   if(rs1.next()) {
-                   	
-                	textField_2Name.setText(rs1.getString("sub_name"));
-                	textField_3Code.setText(rs1.getString("sub_code"));
-                   	//choice_1.getSelectedItem();
-                   	
-					String semester = model.getValueAt(row, 4).toString();
-    				if(semester.equals("1st Semester")) {
-    					rdbtnNewRadioButton_2.setSelected(true);
-    				}else if(semester.equals("2nd Semester")){
-    					rdbtnNewRadioButton_3.setSelected(true);
-                   	
-                   
-                   
-                   }
-				}
-				catch(Exception exe) {
-					exe.printStackTrace();
-				}*/
-				
 				int selectedRow = table.getSelectedRow();
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
 				
 				textField_2Name.setText(model.getValueAt(selectedRow, 1).toString());
 				textField_3Code.setText(model.getValueAt(selectedRow, 2).toString());
-				combotype.setSelectedItem(model.getValueAt(selectedRow, 3).toString());
+				combotype.setSelectedItem(model.getValueAt(selectedRow, 3).toString());;
 				String semester = model.getValueAt(selectedRow, 4).toString();
 				if(semester.equals("1st Semester")) {
 					rdbtnNewRadioButton_2.setSelected(true);
@@ -602,8 +678,33 @@ public class Subject extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		textFieldSearchSub = new JTextField();
+		textFieldSearchSub.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				try {
+					
+					 String search3 = textFieldSearchSub.getText();
+					
+					 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+			         String query = "SELECT id, sub_name, sub_code, offered_year, offered_sem, num_lecHours, num_labHours, num_tuteHours, num_evaHours FROM subject where sub_name LIKE '%"+search3+"%'";
+			     
+			         PreparedStatement pst = connection.prepareStatement(query);
+
+			         ResultSet rs=pst.executeQuery();
+			         table.setModel(DbUtils.resultSetToTableModel(rs));
+			         
+
+					
+				}
+				catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+			}
+		});
 		textFieldSearchSub.setColumns(10);
-		textFieldSearchSub.setBounds(993, 105, 206, 21);
+		textFieldSearchSub.setBounds(993, 93, 206, 33);
 		panelSubDetail.add(textFieldSearchSub);
 		
 		JLabel lblNewLabel_4_1 = new JLabel("Subject Details");
