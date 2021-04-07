@@ -70,8 +70,12 @@ public class grp_student extends JFrame {
 	private JLabel lblNewLabel_12;
 	private JSpinner spin_grpno;
 	private JSpinner spin_subgrpno;
+	private JSpinner spin_grpid;
+	private JSpinner spin_subgrpid;
 	private JComboBox combo_acdisplay;
 	private JComboBox combo_proDisplay;
+	private JComboBox combo_acedamic;
+	private JComboBox combo_prgrm;
 	private JPanel panel_3;
 	private JButton btnNewButton_1;
 	private JLabel lblNewLabel_13;
@@ -88,28 +92,18 @@ public class grp_student extends JFrame {
 	DefaultTableModel model;
 	private JLabel lblNewLabel_16;
 	private JTextField txt_search;
+	private JLabel lbl_academic;
+	private JLabel lbl_;
+	private JLabel lblNewLabel_18;
+	private JLabel lblNewLabel_19;
+	private JLabel lblNewLabel_20;
+	private JLabel lblNewLabel_21;
 
 	/**
 	 * Launch the application.
 	 */
 	
-	public void refreshSt_grp()
-	{
-		 try {
-	    	 
-			 java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
-
-	         String query = "SELECT * FROM Student_grp ";
-	     
-	         PreparedStatement pst = connection.prepareStatement(query);
-	         ResultSet rs=pst.executeQuery();
-	         table_stgrp.setModel(DbUtils.resultSetToTableModel(rs));
-	         
-	        
-	     } catch (Exception exception) {
-	         exception.printStackTrace();
-	     }
-	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -139,18 +133,20 @@ public class grp_student extends JFrame {
 	 * Create the frame.
 	 */
 	public grp_student() {
+		setExtendedState(MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1494, 784);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(102, 51, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("ABC Institute");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 51));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 51));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel.setBounds(353, 24, 513, 82);
+		lblNewLabel.setBounds(530, 10, 513, 82);
 		contentPane.add(lblNewLabel);
 		
 		JSeparator separator = new JSeparator();
@@ -169,6 +165,7 @@ public class grp_student extends JFrame {
 		Add_Student_group.setLayout(null);
 		
 		panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(SystemColor.activeCaption);
 		panel.setBounds(28, 32, 1421, 499);
 		Add_Student_group.add(panel);
@@ -177,31 +174,31 @@ public class grp_student extends JFrame {
 		lblNewLabel_1 = new JLabel("Add Student Groups");
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(459, 5, 291, 38);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_1.setBounds(524, 10, 291, 38);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 20));
 		panel.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("Acedamic Year & Semester");
+		JLabel lblNewLabel_2 = new JLabel("Academic Year & Semester");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_2.setBounds(69, 84, 168, 38);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_2.setBounds(69, 84, 204, 38);
 		panel.add(lblNewLabel_2);
 		
 		lblNewLabel_3 = new JLabel("Programme");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_3.setBounds(69, 175, 168, 38);
 		panel.add(lblNewLabel_3);
 		
 		lblNewLabel_4 = new JLabel("Group Number");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_4.setBounds(69, 264, 168, 38);
 		panel.add(lblNewLabel_4);
 		
 		lblNewLabel_5 = new JLabel("Sub Group Number");
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_5.setBounds(69, 357, 168, 38);
 		panel.add(lblNewLabel_5);
 		
@@ -213,11 +210,11 @@ public class grp_student extends JFrame {
 		spin_subgrpid.setBounds(283, 363, 176, 32);
 		panel.add(spin_subgrpid);
 		
-		JComboBox combo_acedamic = new JComboBox(new Object[]{"Y1S1","Y1S2","Y2S1"});
+		JComboBox combo_acedamic = new JComboBox(new Object[]{"Select","Y1S1","Y1S2","Y2S1","Y2S2","Y3S1","Y3S2","Y4S1","Y4S2"});
 		combo_acedamic.setBounds(283, 89, 176, 32);
 		panel.add(combo_acedamic);
 		
-		JComboBox combo_prgrm = new JComboBox(new Object[]{"IT","DS","CS"});
+		JComboBox combo_prgrm = new JComboBox(new Object[]{"Select","IT","DS","CS","IM","ISE","SE","CSNE","Curtin IT","Curtin CSNE"});
 		combo_prgrm.setBounds(283, 181, 176, 30);
 		panel.add(combo_prgrm);
 		
@@ -252,24 +249,32 @@ public class grp_student extends JFrame {
 		panel_1.add(btn_generate);
 		
 		lblNewLabel_6 = new JLabel("Group ID");
-		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_6.setBounds(22, 88, 103, 21);
 		panel_1.add(lblNewLabel_6);
 		
 		lblNewLabel_7 = new JLabel("Sub Group ID");
-		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_7.setBounds(22, 167, 103, 21);
 		panel_1.add(lblNewLabel_7);
 		
 		txt_grpid = new JTextField();
 		txt_grpid.setColumns(10);
-		txt_grpid.setBounds(200, 88, 145, 19);
+		txt_grpid.setBounds(200, 88, 191, 34);
 		panel_1.add(txt_grpid);
 		
 		txt_subgrpid = new JTextField();
 		txt_subgrpid.setColumns(10);
-		txt_subgrpid.setBounds(200, 167, 145, 19);
+		txt_subgrpid.setBounds(200, 167, 191, 34);
 		panel_1.add(txt_subgrpid);
+		
+		lblNewLabel_20 = new JLabel("New label");
+		lblNewLabel_20.setBounds(200, 128, 176, 13);
+		panel_1.add(lblNewLabel_20);
+		
+		lblNewLabel_21 = new JLabel("New label");
+		lblNewLabel_21.setBounds(200, 211, 176, 13);
+		panel_1.add(lblNewLabel_21);
 		
 		btn_save = new JButton("Save");
 		btn_save.addActionListener(new ActionListener() {
@@ -284,6 +289,10 @@ public class grp_student extends JFrame {
 				String txt_grp = txt_grpid.getText();
 				String txt_subgrp = txt_subgrpid.getText();
 				
+				
+				
+				
+				
 				try {
 					java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
 					
@@ -292,16 +301,14 @@ public class grp_student extends JFrame {
 					
 					Statement statement = connection.createStatement();
 					
-					int x = statement.executeUpdate(query);
+					//int x = statement.executeUpdate(query);
 					
 					
-					 if(x == 0) {
-						JOptionPane.showMessageDialog(btn_save, "This is alredy exist");
+					statement.execute(query);
+					 
+						JOptionPane.showMessageDialog(null, "Succefully Inseretd the Data");
 						
-					}else {
-						JOptionPane.showMessageDialog(btn_save, "Welcome");
-						
-					}
+					
 					
 					 connection.close();
 					
@@ -315,6 +322,7 @@ public class grp_student extends JFrame {
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "This is alredy exist");
 				}
 				
 				
@@ -322,14 +330,51 @@ public class grp_student extends JFrame {
 				
 			}
 		});
+		
+		
+		
+		
+		
 		btn_save.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btn_save.setBounds(970, 416, 116, 27);
 		panel.add(btn_save);
 		
+		
+		
+		
 		btn_clear = new JButton("Clear");
+		btn_clear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				combo_acedamic.setSelectedIndex(0);
+				combo_prgrm.setSelectedIndex(0);
+				spin_grpid.setValue(0);
+				spin_subgrpid.setValue(0);
+				txt_grpid.setText("");
+				txt_subgrpid.setText("");
+			
+				
+			}
+		});
 		btn_clear.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btn_clear.setBounds(1201, 416, 116, 27);
 		panel.add(btn_clear);
+		
+		lbl_academic = new JLabel("New label");
+		lbl_academic.setBounds(283, 131, 176, 13);
+		panel.add(lbl_academic);
+		
+		lbl_ = new JLabel("New label");
+		lbl_.setBounds(283, 221, 176, 13);
+		panel.add(lbl_);
+		
+		lblNewLabel_18 = new JLabel("New label");
+		lblNewLabel_18.setBounds(283, 311, 176, 13);
+		panel.add(lblNewLabel_18);
+		
+		lblNewLabel_19 = new JLabel("New label");
+		lblNewLabel_19.setBounds(283, 410, 176, 13);
+		panel.add(lblNewLabel_19);
 		
 		View_groups = new JPanel();
 		View_groups.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
@@ -338,7 +383,7 @@ public class grp_student extends JFrame {
 		
 		panel_2 = new JPanel();
 		panel_2.setLayout(null);
-		panel_2.setBackground(SystemColor.activeCaption);
+		panel_2.setBackground(new Color(204, 204, 255));
 		panel_2.setBounds(23, 90, 479, 500);
 		View_groups.add(panel_2);
 		
@@ -374,11 +419,13 @@ public class grp_student extends JFrame {
 		spin_subgrpno.setBounds(224, 180, 176, 32);
 		panel_2.add(spin_subgrpno);
 		
-		combo_acdisplay = new JComboBox(new Object[]{"Y1S1","Y1S2","Y2S1"});
+		combo_acdisplay = new JComboBox(new Object[]{"Select","Y1S1","Y1S2","Y2S1","Y2S2","Y3S1","Y3S2","Y4S1","Y4S2"});
+		combo_acdisplay.setMaximumRowCount(10);
 		combo_acdisplay.setBounds(224, 29, 176, 32);
 		panel_2.add(combo_acdisplay);
 		
-		combo_proDisplay = new JComboBox(new Object[]{"IT","DS","CS"});
+		combo_proDisplay = new JComboBox(new Object[]{"Select","IT","DS","CS","IM","ISE","SE","CSNE","Curtin IT","Curtin CSNE"});
+		combo_proDisplay.setMaximumRowCount(10);
 		combo_proDisplay.setBounds(224, 78, 176, 30);
 		panel_2.add(combo_proDisplay);
 		
@@ -470,6 +517,27 @@ public class grp_student extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+			     
+			 	try {
+					java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
+					
+					String query = "select sg_id as 'ID',academic_year_sem as 'Acedamic Year & Sem',programme as 'Programme',group_no as 'GroupNo',subGroup_no as 'SubGroupNo',group_id as 'Group ID',subGroup_id as 'SubGroup ID'  from student_grp";
+	                    
+					 PreparedStatement st =  connection.prepareStatement(query);
+	                    ResultSet rs = st.executeQuery();
+		                   
+	                   table_stgrp.setModel(DbUtils.resultSetToTableModel(rs));
+	                    
+	                    
+	                    st.close();
+	                    
+	                    
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				 
 			}
 		});
 		btn_update.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -504,12 +572,28 @@ public class grp_student extends JFrame {
 				         exception.printStackTrace();
 				     }
 			     
-			     combo_acdisplay.setSelectedItem("");
-			     combo_proDisplay.setSelectedItem("");
-					spin_grpno.setValue("");
-					spin_subgrpno.setValue("");
-					
-					refreshSt_grp();
+			     
+			     try {
+						java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
+						
+						String query = "select sg_id as 'ID',academic_year_sem as 'Acedamic Year & Sem',programme as 'Programme',group_no as 'GroupNo',subGroup_no as 'SubGroupNo',group_id as 'Group ID',subGroup_id as 'SubGroup ID'  from student_grp";
+		                    
+						 PreparedStatement st =  connection.prepareStatement(query);
+		                    ResultSet rs = st.executeQuery();
+			                   
+		                   table_stgrp.setModel(DbUtils.resultSetToTableModel(rs));
+		                    
+		                    
+		                    st.close();
+		                    
+		                    
+						
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			     
+			     
 				
 			}
 		});
@@ -521,10 +605,10 @@ public class grp_student extends JFrame {
 		btn_view_clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				 combo_acdisplay.setSelectedItem("");
-			     combo_proDisplay.setSelectedItem("");
-					//spin_grpno.setValue("");
-					//spin_subgrpno.setValue("");
+				 combo_acdisplay.setSelectedIndex(0);
+			     combo_proDisplay.setSelectedIndex(0);
+					spin_grpno.setValue(0);
+					spin_subgrpno.setValue(0);
 					txt_disgrp_id.setText("");
 					txt_disgrp_subid.setText("");
 			}
@@ -602,7 +686,7 @@ public class grp_student extends JFrame {
 		
 	
 		 model = new DefaultTableModel();
-		Object[] column = {"sg_id","academic_year_sem","programme","group_no","subGroup_no"};
+		Object[] column = {"ID","Acedamic Year & Sem","Programme","GroupNo","SubGroupNo","Group ID","SubGroup ID"};
 		final Object[] row = new Object[0];
 		model.setColumnIdentifiers(column);
 		table_stgrp.setModel(model);
@@ -628,7 +712,7 @@ public class grp_student extends JFrame {
 				try {
 					java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
 					
-					 String query = "select * from student_grp";
+					 String query = "select sg_id as 'ID',academic_year_sem as 'Acedamic Year & Sem',programme as 'Programme',group_no as 'GroupNo',subGroup_no as 'SubGroupNo',group_id as 'Group ID',subGroup_id as 'SubGroup ID'  from student_grp";
 	                    
 					 PreparedStatement st =  connection.prepareStatement(query);
 	                    ResultSet rs = st.executeQuery();
@@ -644,27 +728,47 @@ public class grp_student extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
 				 
 			}
 		});
+		
 		btn_details.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btn_details.setBounds(1374, 94, 116, 27);
 		View_groups.add(btn_details);
 		
 		lblNewLabel_16 = new JLabel("Search");
 		lblNewLabel_16.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_16.setBounds(1156, 52, 103, 21);
+		lblNewLabel_16.setBounds(1098, 52, 103, 21);
 		View_groups.add(lblNewLabel_16);
 		
 		txt_search = new JTextField();
+		txt_search.setToolTipText("");
 		txt_search.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
+				try {
+					java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
+					
+                       
+                    String query = "select * from Student_grp where programme=?";
+                    PreparedStatement st = (PreparedStatement) connection.prepareStatement(query);
+                    st.setNString(1, txt_search.getText());
+                    ResultSet rs = st.executeQuery();
+                   
+                    table_stgrp.setModel(DbUtils.resultSetToTableModel(rs));
+                    
+                    
+                    st.close();
+                    
+			 } catch (SQLException sqlException) {
+                    sqlException.printStackTrace();
+                }
 				
 				
 			}
 		});
-		txt_search.setBounds(1269, 42, 152, 32);
+		txt_search.setBounds(1211, 42, 185, 32);
 		View_groups.add(txt_search);
 		txt_search.setColumns(10);
 		
@@ -687,5 +791,18 @@ public class grp_student extends JFrame {
 		btn_add_grp.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btn_add_grp.setBounds(1073, 129, 167, 34);
 		contentPane.add(btn_add_grp);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Main main = new Main();
+				main.show();
+			}
+		});
+		btnNewButton.setBackground(new Color(102, 51, 255));
+		btnNewButton.setIcon(new ImageIcon(grp_student.class.getResource("/project_abc/home1.png")));
+		btnNewButton.setBounds(172, 135, 54, 47);
+		contentPane.add(btnNewButton);
 	}
 }
