@@ -4,17 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.util.Scanner;
 
-
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+
 import java.awt.Font;
-import javax.swing.JSeparator;
 import java.awt.Color;
-import javax.swing.JToolBar;
 import java.awt.Button;
 import java.awt.event.ActionListener;
 import java.sql.DriverManager;
@@ -22,14 +15,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.JSpinner;
-import javax.swing.JButton;
-import javax.swing.JTextField;
 import java.awt.SystemColor;
-import javax.swing.JLayeredPane;
 import java.awt.CardLayout;
-import javax.swing.JTextPane;
+
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -37,14 +25,14 @@ import com.sun.jdi.connect.spi.Connection;
 
 import net.proteanit.sql.DbUtils;
 
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
 import java.sql.*;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class grp_student extends JFrame {
 
@@ -93,11 +81,9 @@ public class grp_student extends JFrame {
 	private JLabel lblNewLabel_16;
 	private JTextField txt_search;
 	private JLabel lbl_academic;
-	private JLabel lbl_;
-	private JLabel lblNewLabel_18;
-	private JLabel lblNewLabel_19;
-	private JLabel lblNewLabel_20;
-	private JLabel lblNewLabel_21;
+	private JLabel lbl_prgm;
+	private JLabel lbl_grpno;
+	private JLabel lbl_subno;
 
 	/**
 	 * Launch the application.
@@ -203,18 +189,41 @@ public class grp_student extends JFrame {
 		panel.add(lblNewLabel_5);
 		
 		JSpinner spin_grpid = new JSpinner();
+		spin_grpid.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				
+				lbl_grpno.setText("");
+			}
+		});
 		spin_grpid.setBounds(283, 270, 176, 32);
 		panel.add(spin_grpid);
 		
 		JSpinner spin_subgrpid = new JSpinner();
+		spin_subgrpid.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				
+				lbl_subno.setText("");
+			}
+		});
 		spin_subgrpid.setBounds(283, 363, 176, 32);
 		panel.add(spin_subgrpid);
 		
 		JComboBox combo_acedamic = new JComboBox(new Object[]{"Select","Y1S1","Y1S2","Y2S1","Y2S2","Y3S1","Y3S2","Y4S1","Y4S2"});
+		combo_acedamic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lbl_academic.setText("");
+			}
+		});
 		combo_acedamic.setBounds(283, 89, 176, 32);
 		panel.add(combo_acedamic);
 		
 		JComboBox combo_prgrm = new JComboBox(new Object[]{"Select","IT","DS","CS","IM","ISE","SE","CSNE","Curtin IT","Curtin CSNE"});
+		combo_prgrm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				lbl_prgm.setText("");
+			}
+		});
 		combo_prgrm.setBounds(283, 181, 176, 30);
 		panel.add(combo_prgrm);
 		
@@ -268,18 +277,9 @@ public class grp_student extends JFrame {
 		txt_subgrpid.setBounds(200, 167, 191, 34);
 		panel_1.add(txt_subgrpid);
 		
-		lblNewLabel_20 = new JLabel("New label");
-		lblNewLabel_20.setBounds(200, 128, 176, 13);
-		panel_1.add(lblNewLabel_20);
-		
-		lblNewLabel_21 = new JLabel("New label");
-		lblNewLabel_21.setBounds(200, 211, 176, 13);
-		panel_1.add(lblNewLabel_21);
-		
 		btn_save = new JButton("Save");
 		btn_save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				
 				
 				String acedemic = (String)combo_acedamic.getSelectedItem();
@@ -292,6 +292,26 @@ public class grp_student extends JFrame {
 				
 				
 				
+				if(combo_acedamic.getSelectedItem() == "Select" && combo_prgrm.getSelectedItem() == "Select" && (int)spin_grpid.getValue() == 0 && (int)spin_subgrpid.getValue() == 0 )  {
+					lbl_academic.setText("Please Select a tag");
+					lbl_prgm.setText("Please Select a tag");
+					lbl_grpno.setText("Select a group ID");
+					lbl_subno.setText("Select a Sub group ID");
+				}else if(combo_acedamic.getSelectedItem() == "Select") {
+					lbl_academic.setText("Please Select a tag");
+				}else if(combo_prgrm.getSelectedItem() == "Select") {
+					lbl_prgm.setText("Please Select a tag");
+				}else if((int)spin_grpid.getValue() == 0 ) {
+					lbl_grpno.setText("Select a group ID");
+				}else if((int)spin_subgrpid.getValue() == 0) {
+					lbl_subno.setText("Select a Sub group ID");
+				}else {
+				
+					
+					
+					
+					 
+				
 				
 				try {
 					java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
@@ -301,12 +321,18 @@ public class grp_student extends JFrame {
 					
 					Statement statement = connection.createStatement();
 					
-					//int x = statement.executeUpdate(query);
+					statement.executeUpdate(query);
 					
 					
-					statement.execute(query);
+					
+					JOptionPane.showMessageDialog(null, "Welcome " );
+						
+					
+						
+						
+					
 					 
-						JOptionPane.showMessageDialog(null, "Succefully Inseretd the Data");
+						
 						
 					
 					
@@ -326,6 +352,7 @@ public class grp_student extends JFrame {
 				}
 				
 				
+				}
 				
 				
 			}
@@ -360,21 +387,29 @@ public class grp_student extends JFrame {
 		btn_clear.setBounds(1201, 416, 116, 27);
 		panel.add(btn_clear);
 		
-		lbl_academic = new JLabel("New label");
+		lbl_academic = new JLabel("");
+		lbl_academic.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		lbl_academic.setForeground(Color.RED);
 		lbl_academic.setBounds(283, 131, 176, 13);
 		panel.add(lbl_academic);
 		
-		lbl_ = new JLabel("New label");
-		lbl_.setBounds(283, 221, 176, 13);
-		panel.add(lbl_);
+		lbl_prgm = new JLabel("");
+		lbl_prgm.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		lbl_prgm.setForeground(Color.RED);
+		lbl_prgm.setBounds(283, 221, 176, 13);
+		panel.add(lbl_prgm);
 		
-		lblNewLabel_18 = new JLabel("New label");
-		lblNewLabel_18.setBounds(283, 311, 176, 13);
-		panel.add(lblNewLabel_18);
+		lbl_grpno = new JLabel("");
+		lbl_grpno.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		lbl_grpno.setForeground(Color.RED);
+		lbl_grpno.setBounds(283, 311, 176, 13);
+		panel.add(lbl_grpno);
 		
-		lblNewLabel_19 = new JLabel("New label");
-		lblNewLabel_19.setBounds(283, 410, 176, 13);
-		panel.add(lblNewLabel_19);
+		lbl_subno = new JLabel("");
+		lbl_subno.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		lbl_subno.setForeground(Color.RED);
+		lbl_subno.setBounds(283, 410, 176, 13);
+		panel.add(lbl_subno);
 		
 		View_groups = new JPanel();
 		View_groups.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
@@ -503,12 +538,9 @@ public class grp_student extends JFrame {
 							
 						 int x = pst.executeUpdate(query);
 
-						if (x == 0) {
-				             JOptionPane.showMessageDialog(btn_update, "This is alredy exist");
-				         } else {
-				             JOptionPane.showMessageDialog(btn_update,
-				                "Student Group details successfully updated");
-				         }
+						
+				             JOptionPane.showMessageDialog(btn_update,"Student Group details successfully updated");
+				         
 
 	                    
 	                    

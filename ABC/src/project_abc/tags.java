@@ -159,9 +159,7 @@ public class tags extends JFrame {
 				String txt_2 = txt_code.getText();
 				String combo = (String) combo_tag.getSelectedItem();
 				
-				 if(txt_tag.getText().equals(txt_1)) {
-					 JOptionPane.showMessageDialog(null, "This is alredy exist");
-				 }else {
+				
 				
 				
 				try {
@@ -172,27 +170,21 @@ public class tags extends JFrame {
 					
 					Statement statement = connection.createStatement();
 					
-					//int x = statement.executeUpdate(query);
+					  
 					statement.execute(query);
 					JOptionPane.showMessageDialog(null, "Welcome");
 
 					 
-						
-						
-					
-						
-						
-					
-					
-					 connection.close();
+						 connection.close();
 					 
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					 JOptionPane.showMessageDialog(null, "This is alredy exist");
 					
 				}
 				
-				 }
+				 
 				}	
 			}
 		});
