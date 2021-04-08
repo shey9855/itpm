@@ -123,21 +123,23 @@ public class grp_student extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1494, 784);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(102, 51, 255));
+		contentPane.setBackground(new Color(102, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("ABC Institute");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 51));
+		lblNewLabel.setBackground(new Color(0, 0, 51));
+		lblNewLabel.setForeground(new Color(0, 0, 51));
+		lblNewLabel.setFont(new Font("Roboto Slab", Font.BOLD, 70));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel.setBounds(530, 10, 513, 82);
+		lblNewLabel.setBounds(523, 24, 513, 82);
 		contentPane.add(lblNewLabel);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.BLACK);
-		separator.setBounds(54, 104, 1426, 2);
+		separator.setBounds(54, 116, 1426, 2);
 		contentPane.add(separator);
 		
 		layeredPane = new JLayeredPane();
@@ -152,7 +154,7 @@ public class grp_student extends JFrame {
 		
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setBackground(SystemColor.activeCaption);
+		panel.setBackground(new Color(204, 204, 255));
 		panel.setBounds(28, 32, 1421, 499);
 		Add_Student_group.add(panel);
 		panel.setLayout(null);
@@ -293,14 +295,14 @@ public class grp_student extends JFrame {
 				
 				
 				if(combo_acedamic.getSelectedItem() == "Select" && combo_prgrm.getSelectedItem() == "Select" && (int)spin_grpid.getValue() == 0 && (int)spin_subgrpid.getValue() == 0 )  {
-					lbl_academic.setText("Please Select a tag");
-					lbl_prgm.setText("Please Select a tag");
+					lbl_academic.setText("Select an Academic Year");
+					lbl_prgm.setText("Select a Programme");
 					lbl_grpno.setText("Select a group ID");
 					lbl_subno.setText("Select a Sub group ID");
 				}else if(combo_acedamic.getSelectedItem() == "Select") {
-					lbl_academic.setText("Please Select a tag");
+					lbl_academic.setText("Select an Academic Year");
 				}else if(combo_prgrm.getSelectedItem() == "Select") {
-					lbl_prgm.setText("Please Select a tag");
+					lbl_prgm.setText("Select a Programme");
 				}else if((int)spin_grpid.getValue() == 0 ) {
 					lbl_grpno.setText("Select a group ID");
 				}else if((int)spin_subgrpid.getValue() == 0) {
@@ -325,7 +327,7 @@ public class grp_student extends JFrame {
 					
 					
 					
-					JOptionPane.showMessageDialog(null, "Welcome " );
+					JOptionPane.showMessageDialog(null, "Data Added Successfully" );
 						
 					
 						
@@ -348,7 +350,7 @@ public class grp_student extends JFrame {
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-					JOptionPane.showMessageDialog(null, "This is alredy exist");
+					JOptionPane.showMessageDialog(null, "The Record is Alredy Exist");
 				}
 				
 				
@@ -424,25 +426,25 @@ public class grp_student extends JFrame {
 		
 		lblNewLabel_9 = new JLabel("Acedamic Year & Semester");
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_9.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_9.setBounds(10, 24, 168, 38);
+		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_9.setBounds(10, 24, 194, 38);
 		panel_2.add(lblNewLabel_9);
 		
 		lblNewLabel_10 = new JLabel("Programme");
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_10.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_10.setBounds(10, 72, 168, 38);
 		panel_2.add(lblNewLabel_10);
 		
 		lblNewLabel_11 = new JLabel("Group Number");
 		lblNewLabel_11.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_11.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_11.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_11.setBounds(10, 126, 168, 38);
 		panel_2.add(lblNewLabel_11);
 		
 		lblNewLabel_12 = new JLabel("Sub Group Number");
 		lblNewLabel_12.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_12.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_12.setBounds(10, 174, 168, 38);
 		panel_2.add(lblNewLabel_12);
 		
@@ -493,12 +495,12 @@ public class grp_student extends JFrame {
 		panel_3.add(btnNewButton_1);
 		
 		lblNewLabel_13 = new JLabel("Group ID");
-		lblNewLabel_13.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_13.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_13.setBounds(10, 55, 103, 21);
 		panel_3.add(lblNewLabel_13);
 		
 		lblNewLabel_14 = new JLabel("Sub Group ID");
-		lblNewLabel_14.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_14.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_14.setBounds(10, 101, 103, 21);
 		panel_3.add(lblNewLabel_14);
 		
@@ -536,7 +538,7 @@ public class grp_student extends JFrame {
 						 String query = "UPDATE Student_grp set academic_year_sem='"+acedemic_update+"', programme='"+program_update+"', group_no='"+grp_id_update+"', subGroup_no='"+subgrp_id_update+"' ,group_id='"+txt_grp_update+"',subGroup_id='"+txt_subgrp_update+"' where sg_id='"+id+"'";
 						 PreparedStatement pst = connection.prepareStatement(query);
 							
-						 int x = pst.executeUpdate(query);
+						  pst.executeUpdate(query);
 
 						
 				             JOptionPane.showMessageDialog(btn_update,"Student Group details successfully updated");
@@ -594,7 +596,7 @@ public class grp_student extends JFrame {
 						if (rs == 0) {
 				             JOptionPane.showMessageDialog(btn_delete, "This is alredy exist");
 				         } else {
-				             JOptionPane.showMessageDialog(btn_delete,"Customer details successfully Deleted");
+				             JOptionPane.showMessageDialog(btn_delete,"Student Group details successfully Deleted");
 				         }
 				         connection.close();
 	                   
@@ -654,7 +656,7 @@ public class grp_student extends JFrame {
 		View_groups.add(lblNewLabel_8);
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setForeground(Color.BLACK);
-		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 17));
 		
 		separator_1_1 = new JSeparator();
 		separator_1_1.setOrientation(SwingConstants.VERTICAL);
@@ -678,13 +680,16 @@ public class grp_student extends JFrame {
 					combo_proDisplay.setSelectedItem(model.getValueAt(row, 2).toString());
 					spin_grpno.setValue(model.getValueAt(row, 3));
 					spin_subgrpno.setValue(model.getValueAt(row, 4));
+					txt_disgrp_id.setText(model.getValueAt(row, 5).toString());
+					txt_disgrp_subid.setText(model.getValueAt(row, 6).toString());
+					
 					
 					
 					
 					String sg_ID =(table_stgrp.getModel().getValueAt(row, 0).toString());
 					java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
 					
-					 String query = "select academic_year_sem,programme,group_no,subGroup_no from student_grp  where sg_id ='"+sg_ID+"'" ;
+					 String query = "select academic_year_sem,programme,group_no,subGroup_no,group_id,subGroup_id from student_grp  where sg_id ='"+sg_ID+"'" ;
 	                    
 					 PreparedStatement st =  connection.prepareStatement(query);
 	                    ResultSet rs = st.executeQuery();
@@ -695,7 +700,8 @@ public class grp_student extends JFrame {
 			            	combo_proDisplay.setSelectedItem("programme");
 			            	spin_grpno.setValue(rs.getString("group_no"));
 			            	spin_subgrpno.setValue(rs.getString("subGroup_no"));
-			            	 
+			            	txt_disgrp_id.setText(rs.getString("group_id"));
+			            	txt_disgrp_subid.setText(rs.getString("subGroup_id"));
 			            	 
 			            	 
 			             }
@@ -731,8 +737,8 @@ public class grp_student extends JFrame {
 		JLabel lblNewLabel_8_1 = new JLabel("Manage Student Groups");
 		lblNewLabel_8_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8_1.setForeground(Color.BLACK);
-		lblNewLabel_8_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel_8_1.setBounds(555, 10, 291, 38);
+		lblNewLabel_8_1.setFont(new Font("Tahoma", Font.BOLD, 22));
+		lblNewLabel_8_1.setBounds(653, 10, 291, 38);
 		View_groups.add(lblNewLabel_8_1);
 		
 		//Connection connection = null;
@@ -769,9 +775,9 @@ public class grp_student extends JFrame {
 		btn_details.setBounds(1374, 94, 116, 27);
 		View_groups.add(btn_details);
 		
-		lblNewLabel_16 = new JLabel("Search");
-		lblNewLabel_16.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_16.setBounds(1098, 52, 103, 21);
+		lblNewLabel_16 = new JLabel("Search By Program");
+		lblNewLabel_16.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_16.setBounds(1040, 45, 147, 21);
 		View_groups.add(lblNewLabel_16);
 		
 		txt_search = new JTextField();
@@ -832,9 +838,9 @@ public class grp_student extends JFrame {
 				main.show();
 			}
 		});
-		btnNewButton.setBackground(new Color(102, 51, 255));
+		btnNewButton.setBackground(new Color(102, 153, 204));
 		btnNewButton.setIcon(new ImageIcon(grp_student.class.getResource("/project_abc/home1.png")));
-		btnNewButton.setBounds(172, 135, 54, 47);
+		btnNewButton.setBounds(39, 129, 54, 47);
 		contentPane.add(btnNewButton);
 	}
 }

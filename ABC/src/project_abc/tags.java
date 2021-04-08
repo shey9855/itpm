@@ -82,20 +82,23 @@ public class tags extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1397, 789);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(102, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("ABC Institute");
-		lblNewLabel.setBounds(60, 10, 1373, 62);
+		lblNewLabel.setBackground(new Color(0, 0, 51));
+		lblNewLabel.setForeground(new Color(0, 0, 51));
+		lblNewLabel.setBounds(77, 10, 1373, 81);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 51));
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 70));
 		contentPane.add(lblNewLabel);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.BLACK);
-		separator.setBounds(57, 77, 1426, 2);
+		separator.setBounds(34, 89, 1426, 2);
 		contentPane.add(separator);
 		
 		JPanel panel = new JPanel();
@@ -110,6 +113,7 @@ public class tags extends JFrame {
 		panel.add(separator_1_1);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(204, 204, 255));
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel_1.setBounds(31, 92, 458, 494);
 		panel.add(panel_1);
@@ -118,19 +122,19 @@ public class tags extends JFrame {
 		JLabel lblNewLabel_9 = new JLabel("Tag Name");
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_9.setBounds(10, 64, 129, 38);
+		lblNewLabel_9.setBounds(10, 68, 129, 38);
 		panel_1.add(lblNewLabel_9);
 		
 		JLabel lblNewLabel_9_1 = new JLabel("Tag Code");
 		lblNewLabel_9_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_9_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_9_1.setBounds(10, 168, 129, 38);
+		lblNewLabel_9_1.setBounds(10, 170, 129, 38);
 		panel_1.add(lblNewLabel_9_1);
 		
 		JLabel lblNewLabel_9_2 = new JLabel("Related Tag");
 		lblNewLabel_9_2.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_9_2.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_9_2.setBounds(10, 284, 129, 38);
+		lblNewLabel_9_2.setBounds(10, 286, 129, 38);
 		panel_1.add(lblNewLabel_9_2);
 		
 		JButton btn_save = new JButton("Save");
@@ -140,16 +144,16 @@ public class tags extends JFrame {
 				
 				if(txt_tag.getText().trim().isEmpty() && txt_code.getText().trim().isEmpty() && combo_tag.getSelectedItem() == "Select" ) {
 					
-					lbl_tag.setText("Tag Name filed is empty ");
-					lbl_code.setText("Tag Code filed is empty");
-					lbl_combo.setText("Please Select a tag");
+					lbl_tag.setText("Enter Tag Name ");
+					lbl_code.setText("Enter Tag Code");
+					lbl_combo.setText("Please Select a Tag");
 				}else if(txt_tag.getText().trim().isEmpty()){
 					
-					lbl_tag.setText("Tag Name filed is empty ");
+					lbl_tag.setText("Enter Tag Name ");
 				}else if(txt_code.getText().trim().isEmpty()) {
-					lbl_code.setText("Tag Code filed is empty");
+					lbl_code.setText("Enter Tag Code");
 				}else if(combo_tag.getSelectedItem() == "Select") {
-					lbl_combo.setText("Please Select a tag");
+					lbl_combo.setText("Please Select a Tag");
 				}
 				
 				else {
@@ -172,7 +176,7 @@ public class tags extends JFrame {
 					
 					  
 					statement.execute(query);
-					JOptionPane.showMessageDialog(null, "Welcome");
+					JOptionPane.showMessageDialog(null, "Data Added Successfully");
 
 					 
 						 connection.close();
@@ -180,7 +184,7 @@ public class tags extends JFrame {
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-					 JOptionPane.showMessageDialog(null, "This is alredy exist");
+					 JOptionPane.showMessageDialog(null, "The Record is Alredy Exist");
 					
 				}
 				
@@ -212,7 +216,7 @@ public class tags extends JFrame {
 	 		lbl_combo.setText("");
 	 	}
 	 });
-		combo_tag.setBounds(159, 292, 207, 27);
+		combo_tag.setBounds(159, 292, 227, 30);
 		panel_1.add(combo_tag);
 		
 		txt_tag = new JTextField();
@@ -223,7 +227,7 @@ public class tags extends JFrame {
 				lbl_tag.setText("");
 			}
 		});
-		txt_tag.setBounds(160, 76, 206, 26);
+		txt_tag.setBounds(160, 76, 226, 27);
 		panel_1.add(txt_tag);
 		txt_tag.setColumns(10);
 		
@@ -234,23 +238,26 @@ public class tags extends JFrame {
 				lbl_code.setText("");
 			}
 		});
-		txt_code.setBounds(158, 177, 208, 26);
+		txt_code.setBounds(158, 177, 228, 29);
 		panel_1.add(txt_code);
 		txt_code.setColumns(10);
 		
 		lbl_tag = new JLabel("");
+		lbl_tag.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
 		lbl_tag.setForeground(Color.RED);
 		lbl_tag.setBounds(159, 122, 182, 13);
 		panel_1.add(lbl_tag);
 		
 		lbl_code = new JLabel("");
+		lbl_code.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
 		lbl_code.setForeground(Color.RED);
 		lbl_code.setBounds(159, 225, 182, 13);
 		panel_1.add(lbl_code);
 		
 		 lbl_combo = new JLabel("");
+		 lbl_combo.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
 		 lbl_combo.setForeground(Color.RED);
-		lbl_combo.setBounds(165, 339, 182, 13);
+		lbl_combo.setBounds(159, 345, 182, 13);
 		panel_1.add(lbl_combo);
 		
 		
@@ -268,7 +275,8 @@ public class tags extends JFrame {
 		panel.add(separator_1);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_2.setBackground(new Color(204, 204, 255));
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel_2.setBounds(593, 407, 744, 181);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
@@ -317,14 +325,11 @@ public class tags extends JFrame {
 						 String query = "UPDATE Tag set tag_name='"+tag_update+"', tag_code='"+code_update+"', related_tag='"+combo_related+"' where t_id='"+id+"'";
 						 PreparedStatement pst = connection.prepareStatement(query);
 							
-						 int x = pst.executeUpdate(query);
+						  pst.executeUpdate(query);
 
-						if (x == 0) {
-				             JOptionPane.showMessageDialog(btn_update, "This is alredy exist");
-				         } else {
-				             JOptionPane.showMessageDialog(btn_update,
-				                "Tad details successfully updated");
-				         }
+						
+				             JOptionPane.showMessageDialog(btn_update, "Tag details successfully Updated");
+				         
 
 	                    
 	                    
@@ -554,9 +559,16 @@ public class tags extends JFrame {
 		scrollPane.setViewportView(table_tag);
 		
 		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Main main = new Main();
+				main.show();
+			}
+		});
 		btnNewButton.setIcon(new ImageIcon(tags.class.getResource("/project_abc/home1.png")));
-		btnNewButton.setBackground(new Color(102, 51, 255));
-		btnNewButton.setBounds(117, 101, 54, 47);
+		btnNewButton.setBackground(new Color(102, 153, 204));
+		btnNewButton.setBounds(34, 101, 54, 47);
 		contentPane.add(btnNewButton);
 	}
 }
