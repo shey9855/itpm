@@ -72,17 +72,14 @@ public class Subject extends JFrame {
 				}
 			}
 		});
-	}
-	
+	}	
 	public void switchPanels(JPanel panel)
 	{
 		layeredPane.removeAll();
 		layeredPane.add(panel);
 		layeredPane.repaint();
-		layeredPane.revalidate();
-		
+		layeredPane.revalidate();		
 	}
-
 	/**
 	 * Create the frame.
 	 */
@@ -171,12 +168,45 @@ public class Subject extends JFrame {
 		lblNewLabel_3_3.setBounds(81, 130, 119, 19);
 		panel.add(lblNewLabel_3_3);
 		
+		JLabel subject_name_required = new JLabel("");
+		subject_name_required.setForeground(new Color(255, 0, 0));
+		subject_name_required.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		subject_name_required.setBounds(250, 90, 208, 13);
+		panel.add(subject_name_required);
+		
+		JLabel subject_code_required_1 = new JLabel("");
+		subject_code_required_1.setForeground(Color.RED);
+		subject_code_required_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
+		subject_code_required_1.setBounds(250, 163, 208, 13);
+		panel.add(subject_code_required_1);
+		
+		JLabel offered_year_required_ = new JLabel("");
+		offered_year_required_.setForeground(Color.RED);
+		offered_year_required_.setFont(new Font("Tahoma", Font.BOLD, 12));
+		offered_year_required_.setBounds(250, 231, 208, 13);
+		panel.add(offered_year_required_);
+		
 		textFieldName = new JTextField();
+		textFieldName.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textFieldName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				subject_name_required.setText("");
+			}
+		});
 		textFieldName.setBounds(250, 54, 231, 26);
 		panel.add(textFieldName);
 		textFieldName.setColumns(10);
 		
 		textField_1code = new JTextField();
+		textField_1code.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField_1code.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				subject_code_required_1.setText("");
+			}
+		});
 		textField_1code.setColumns(10);
 		textField_1code.setBounds(250, 123, 231, 26);
 		panel.add(textField_1code);
@@ -238,38 +268,26 @@ public class Subject extends JFrame {
 		panel.add(rdbtnNewRadioButton_1);
 		
 		JSpinner spinnerLec = new JSpinner();
+		spinnerLec.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinnerLec.setBounds(805, 54, 237, 26);
 		panel.add(spinnerLec);
 		
 		JSpinner spinnerLab = new JSpinner();
+		spinnerLab.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinnerLab.setBounds(805, 123, 237, 26);
 		panel.add(spinnerLab);
 		
 		JSpinner spinnerTute = new JSpinner();
+		spinnerTute.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinnerTute.setBounds(805, 196, 237, 26);
 		panel.add(spinnerTute);
 		
 		JSpinner spinnerEva = new JSpinner();
+		spinnerEva.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinnerEva.setBounds(805, 272, 237, 26);
 		panel.add(spinnerEva);
 		
-		JLabel subject_name_required = new JLabel("");
-		subject_name_required.setForeground(new Color(255, 0, 0));
-		subject_name_required.setFont(new Font("Tahoma", Font.BOLD, 12));
-		subject_name_required.setBounds(250, 90, 208, 13);
-		panel.add(subject_name_required);
 		
-		JLabel subject_code_required_1 = new JLabel("");
-		subject_code_required_1.setForeground(Color.RED);
-		subject_code_required_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		subject_code_required_1.setBounds(250, 163, 208, 13);
-		panel.add(subject_code_required_1);
-		
-		JLabel offered_year_required_ = new JLabel("");
-		offered_year_required_.setForeground(Color.RED);
-		offered_year_required_.setFont(new Font("Tahoma", Font.BOLD, 12));
-		offered_year_required_.setBounds(250, 231, 208, 13);
-		panel.add(offered_year_required_);
 		
 		
 		JButton btnNewButton_2 = new JButton("Add Subject");
@@ -347,6 +365,14 @@ public class Subject extends JFrame {
 		
 		String[] offered_year = {"(select)","1st year", "2nd Year", "3rd Year", "4th Year"}; 
 		comboBox_offeredyear = new JComboBox(offered_year);
+		comboBox_offeredyear.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		comboBox_offeredyear.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				offered_year_required_.setText("");
+				
+			}
+		});
 		comboBox_offeredyear.setBounds(250, 198, 231, 21);
 		panel.add(comboBox_offeredyear);
 	
@@ -410,18 +436,22 @@ public class Subject extends JFrame {
 		panel_1.add(rdbtnNewRadioButton_3);
 		
 		JSpinner spinner_1 = new JSpinner();
+		spinner_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinner_1.setBounds(172, 381, 206, 20);
 		panel_1.add(spinner_1);
 		
 		JSpinner spinner_1_1 = new JSpinner();
+		spinner_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinner_1_1.setBounds(172, 337, 206, 20);
 		panel_1.add(spinner_1_1);
 		
 		JSpinner spinner_1_2 = new JSpinner();
+		spinner_1_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinner_1_2.setBounds(172, 291, 206, 20);
 		panel_1.add(spinner_1_2);
 		
 		JSpinner spinner_1_3 = new JSpinner();
+		spinner_1_3.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinner_1_3.setBounds(172, 247, 206, 20);
 		panel_1.add(spinner_1_3);
 		
@@ -572,11 +602,13 @@ public class Subject extends JFrame {
 		panel_1.add(lblSubjectCode);
 		
 		textField_2Name = new JTextField();
+		textField_2Name.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textField_2Name.setBounds(172, 28, 206, 19);
 		panel_1.add(textField_2Name);
 		textField_2Name.setColumns(10);
 		
 		textField_3Code = new JTextField();
+		textField_3Code.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textField_3Code.setColumns(10);
 		textField_3Code.setBounds(172, 73, 206, 19);
 		panel_1.add(textField_3Code);
@@ -593,6 +625,7 @@ public class Subject extends JFrame {
 		
 		String [] type = {"(select)", "1st year", "2nd Year", "3rd Year", "4th Year"};
 		combotype = new JComboBox(type);
+		combotype.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		combotype.setBounds(172, 120, 206, 21);
 		panel_1.add(combotype);
 		
@@ -643,6 +676,7 @@ public class Subject extends JFrame {
 		panelSubDetail.add(scrollPane);
 		
 		table = new JTable();
+		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -678,6 +712,7 @@ public class Subject extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		textFieldSearchSub = new JTextField();
+		textFieldSearchSub.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textFieldSearchSub.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {

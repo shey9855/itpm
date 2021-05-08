@@ -51,9 +51,7 @@ public class Main extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
-		
+			
 		JLabel lblNewLabel = new JLabel("ABC Institute");
 		lblNewLabel.setBackground(new Color(204, 204, 255));
 		lblNewLabel.setForeground(new Color(153, 153, 255));
@@ -177,8 +175,5 @@ public class Main extends JFrame {
 		btnNewButton_8.setFont(new Font("Ink Free", Font.BOLD, 16));
 		btnNewButton_8.setBounds(1078, 580, 308, 138);
 		contentPane.add(btnNewButton_8);
-		
-		
-		
 	}
 }

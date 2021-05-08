@@ -214,12 +214,39 @@ public class Lecturer extends JFrame {
 		lblNewLabel_2_2_5.setBounds(21, 242, 209, 24);
 		panel.add(lblNewLabel_2_2_5);
 		
+		JLabel lblNewLabel_name_required = new JLabel("");
+		lblNewLabel_name_required.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel_name_required.setForeground(Color.RED);
+		lblNewLabel_name_required.setBounds(187, 66, 282, 13);
+		panel.add(lblNewLabel_name_required);
+		
+		JLabel lblNewLabel_ID_required = new JLabel("");
+		lblNewLabel_ID_required.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel_ID_required.setForeground(Color.RED);
+		lblNewLabel_ID_required.setBounds(187, 114, 282, 13);
+		panel.add(lblNewLabel_ID_required);
+		
 		textField_lecName = new JTextField();
+		textField_lecName.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		textField_lecName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				lblNewLabel_name_required.setText("");
+			}
+		});
 		textField_lecName.setColumns(10);
 		textField_lecName.setBounds(187, 40, 282, 26);
 		panel.add(textField_lecName);
 		
 		textField_empID = new JTextField();
+		textField_empID.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		textField_empID.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				lblNewLabel_ID_required.setText("");
+				
+			}
+		});
 		textField_empID.setColumns(10);
 		textField_empID.setBounds(187, 89, 282, 26);
 		panel.add(textField_empID);
@@ -230,13 +257,14 @@ public class Lecturer extends JFrame {
 		panel.add(lblNewLabel_2_2_1_1);
 		
 		textField_rank = new JTextField();
+		textField_rank.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_rank.setColumns(10);
 		textField_rank.setBounds(187, 242, 282, 26);
 		panel.add(textField_rank);
 		
 		JLabel lblNewLabel_level_required_1 = new JLabel("");
 		lblNewLabel_level_required_1.setForeground(Color.RED);
-		lblNewLabel_level_required_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_level_required_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
 		lblNewLabel_level_required_1.setBounds(187, 159, 282, 13);
 		panel.add(lblNewLabel_level_required_1);
 		
@@ -269,6 +297,7 @@ public class Lecturer extends JFrame {
 		
 		String [] fac = {"(select)", "IT", "Engineering", "Business Management", "Humanities & Sciences"};
 		comboBox_Faculty = new JComboBox(fac);
+		comboBox_Faculty.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox_Faculty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -320,11 +349,13 @@ public class Lecturer extends JFrame {
 		
 		
 		comboBox_Dept = new JComboBox();
+		comboBox_Dept.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox_Dept.setBounds(187, 341, 282, 21);
 		panel.add(comboBox_Dept);
 		
 		String [] cen = {"(select)","Malabe", "Kandy", "Kurunagala","Colombo","Matara"};
 		comboBox_Center = new JComboBox(cen);
+		comboBox_Center.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox_Center.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -379,29 +410,23 @@ public class Lecturer extends JFrame {
 		panel.add(comboBox_Center);
 		
 		comboBox_Build = new JComboBox();
+		comboBox_Build.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox_Build.setBounds(187, 433, 282, 21);
 		panel.add(comboBox_Build);
 	
-		
 		String [] level = {"(select)", "1", "2", "3", "4", "5","6"};
 		comboBox_Lev = new JComboBox(level);
+		comboBox_Lev.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		comboBox_Lev.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				lblNewLabel_level_required_1.setText("");
+			}
+		});
 		comboBox_Lev.setBounds(187, 139, 282, 21);
 		panel.add(comboBox_Lev);
-		
-		JLabel lblNewLabel_name_required = new JLabel("");
-		lblNewLabel_name_required.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_name_required.setForeground(Color.RED);
-		lblNewLabel_name_required.setBounds(187, 66, 282, 13);
-		panel.add(lblNewLabel_name_required);
-		
-		JLabel lblNewLabel_ID_required = new JLabel("");
-		lblNewLabel_ID_required.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_ID_required.setForeground(Color.RED);
-		lblNewLabel_ID_required.setBounds(187, 114, 282, 13);
-		panel.add(lblNewLabel_ID_required);
-		
-		
-		
+	
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(204, 204, 255));
 		panel_1.setBounds(681, 97, 510, 417);
@@ -424,36 +449,43 @@ public class Lecturer extends JFrame {
 		panel_1.add(lblNewLabel_2_2_1_2);
 		
 		monday = new JTextField();
+		monday.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		monday.setColumns(10);
 		monday.setBounds(213, 78, 282, 26);
 		panel_1.add(monday);
 		
 		tuesday = new JTextField();
+		tuesday.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		tuesday.setColumns(10);
 		tuesday.setBounds(213, 125, 282, 26);
 		panel_1.add(tuesday);
 		
 		wednesday = new JTextField();
+		wednesday.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		wednesday.setColumns(10);
 		wednesday.setBounds(213, 172, 282, 26);
 		panel_1.add(wednesday);
 		
 		thursday = new JTextField();
+		thursday.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		thursday.setColumns(10);
 		thursday.setBounds(213, 219, 282, 26);
 		panel_1.add(thursday);
 		
 		friday = new JTextField();
+		friday.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		friday.setColumns(10);
 		friday.setBounds(213, 266, 282, 26);
 		panel_1.add(friday);
 		
 		saturday = new JTextField();
+		saturday.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		saturday.setColumns(10);
 		saturday.setBounds(213, 313, 282, 26);
 		panel_1.add(saturday);
 		
 		sunday = new JTextField();
+		sunday.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		sunday.setColumns(10);
 		sunday.setBounds(213, 362, 282, 26);
 		panel_1.add(sunday);
@@ -527,26 +559,25 @@ public class Lecturer extends JFrame {
                 }
 				
                 else {
-                try {
-                	Class.forName("com.mysql.cj.jdbc.Driver");
-			       Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                	try {
+                		Class.forName("com.mysql.cj.jdbc.Driver");
+                		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
 
-                   String query = "INSERT INTO lecturer values(0,'" + lec_name + "','" + lec_id_emp + "','" + level + "','" + rank + "','"+fac+"','"+dep+"','"+cent+"','"+build+"','" + mon + "','" + tue + "','" + wedn + "','"+thurs+"','"+fri+"','"+sat+"','"+sun+"')";                                                                                                       
-                   Statement sta = connection.createStatement();
-                   int x = sta.executeUpdate(query);
+                		String query = "INSERT INTO lecturer values(0,'" + lec_name + "','" + lec_id_emp + "','" + level + "','" + rank + "','"+fac+"','"+dep+"','"+cent+"','"+build+"','" + mon + "','" + tue + "','" + wedn + "','"+thurs+"','"+fri+"','"+sat+"','"+sun+"')";                                                                                                       
+                		Statement sta = connection.createStatement();
+                		int x = sta.executeUpdate(query);
                    
-                   connection.close();
-                   JOptionPane.showMessageDialog(null, "Inserted Successfully");
-                   lblNewLabel_name_required.setText("");
-					lblNewLabel_ID_required.setText("");
+                		connection.close();
+                		JOptionPane.showMessageDialog(null, "Inserted Successfully");
+                		lblNewLabel_name_required.setText("");
+                		lblNewLabel_ID_required.setText("");
                    
 
-               } catch (Exception exception) {
-               	
-                   exception.printStackTrace();
-               }
-			
-			}
+                    }catch (Exception exception) {
+                    	exception.printStackTrace();
+                    	JOptionPane.showMessageDialog(null, "Lecturer ID is already taken");
+                    }
+			    }
 			}
 		});
 		btnNewButtonSavelec.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -620,11 +651,13 @@ public class Lecturer extends JFrame {
 		panelLecDetail.add(lblNewLabel_2_2_5_2);
 		
 		textFieldName_1 = new JTextField();
+		textFieldName_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldName_1.setColumns(10);
 		textFieldName_1.setBounds(187, 40, 221, 26);
 		panelLecDetail.add(textFieldName_1);
 		
 		textFieldEmpID_1 = new JTextField();
+		textFieldEmpID_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldEmpID_1.setColumns(10);
 		textFieldEmpID_1.setBounds(187, 89, 221, 26);
 		panelLecDetail.add(textFieldEmpID_1);
@@ -641,11 +674,8 @@ public class Lecturer extends JFrame {
 				String empid2 = (String)textFieldEmpID_1.getText();
 				String levelS2 = (String)comboBox_Lev2.getSelectedItem();
 				
-				
-					String rankString2 = levelS2+"."+empid2;
-					textFieldupdaterank.setText(rankString2);
-					
-				
+				String rankString2 = levelS2+"."+empid2;
+				textFieldupdaterank.setText(rankString2);
 			}
 		});
 		btnNewButtongeneraterankNew.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -653,6 +683,7 @@ public class Lecturer extends JFrame {
 		panelLecDetail.add(btnNewButtongeneraterankNew);
 		
 		textFieldupdaterank = new JTextField();
+		textFieldupdaterank.setFont(new Font("Dialog", Font.PLAIN, 13));
 		textFieldupdaterank.setColumns(10);
 		textFieldupdaterank.setBounds(187, 225, 221, 26);
 		panelLecDetail.add(textFieldupdaterank);
@@ -702,7 +733,7 @@ public class Lecturer extends JFrame {
 				try {
 					Class.forName("com.mysql.cj.jdbc.Driver");
                     Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
-                    String query = "select id, lecturer_name, lecturer_ID, lecturer_level, lecturer_rank, faculty, department, center, building from lecturer";
+                    String query = "select id as 'ID', lecturer_name as 'Lecturer Name', lecturer_ID as 'Lecturer ID', lecturer_level as 'Level', lecturer_rank as 'Rank', faculty as 'Faculty', department as 'Department', center as 'Center', building as 'Building' from lecturer";
                     Statement sta = connection.createStatement();
                     ResultSet rs1 = sta.executeQuery(query);
                     
@@ -765,7 +796,7 @@ public class Lecturer extends JFrame {
 				try {
 					Class.forName("com.mysql.cj.jdbc.Driver");
                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
-                   String query = "select id, lecturer_name, lecturer_ID, lecturer_level, lecturer_rank, faculty, department, center, building from lecturer";
+                   String query = "select id as 'ID', lecturer_name as 'Lecturer Name', lecturer_ID as 'Lecturer ID', lecturer_level as 'Level', lecturer_rank as 'Rank', faculty as 'Faculty', department as 'Department', center as 'Center', building as 'Building' from lecturer";
                    Statement sta = connection.createStatement();
                    ResultSet rs1 = sta.executeQuery(query);
                    
@@ -786,7 +817,6 @@ public class Lecturer extends JFrame {
 				comboBox_Dept2.setSelectedItem("(select)");
 				comboBox_Cent2.setSelectedItem("(select)");
 				comboBox_Build2.setSelectedItem("(select)");
-				
 			}
 		});
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -795,17 +825,18 @@ public class Lecturer extends JFrame {
 		
 		String [] fac2 = {"(select)", "IT", "Engineering", "Business Management", "Humanities & Sciences"};
 		comboBox_Fac2 = new JComboBox(fac2);
+		comboBox_Fac2.setFont(new Font("Dialog", Font.PLAIN, 13));
 		comboBox_Fac2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(comboBox_Fac2.getSelectedItem().equals("IT")) {
 					
 					//comboBox_dept.setSelectedItem(null);
-					comboBox_Dept.removeAllItems();
-					comboBox_Dept.addItem("(select)");
-					comboBox_Dept.addItem("IT");
-					comboBox_Dept.addItem("CSSE");
-					comboBox_Dept.addItem("CSE");
+					comboBox_Dept2.removeAllItems();
+					comboBox_Dept2.addItem("(select)");
+					comboBox_Dept2.addItem("IT");
+					comboBox_Dept2.addItem("CSSE");
+					comboBox_Dept2.addItem("CSE");
 					
 				}
 				else if(comboBox_Fac2.getSelectedItem().equals("Engineering")) {
@@ -838,20 +869,21 @@ public class Lecturer extends JFrame {
 					comboBox_Dept2.addItem("Nursing");
 					comboBox_Dept2.addItem("Law");
 					comboBox_Dept2.addItem("Physical Sciences");					
-			}
-			}
-				
+				}
+			}				
 			
 		});
 		comboBox_Fac2.setBounds(187, 275, 221, 21);
 		panelLecDetail.add(comboBox_Fac2);
 		
 		comboBox_Dept2 = new JComboBox();
+		comboBox_Dept2.setFont(new Font("Dialog", Font.PLAIN, 13));
 		comboBox_Dept2.setBounds(187, 318, 221, 21);
 		panelLecDetail.add(comboBox_Dept2);
 		
 		String [] cen2 = { "(select)","Malabe", "Kandy", "Kurunagala","Colombo","Matara"};
 		comboBox_Cent2 = new JComboBox(cen2);
+		comboBox_Cent2.setFont(new Font("Dialog", Font.PLAIN, 13));
 		comboBox_Cent2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -905,11 +937,13 @@ public class Lecturer extends JFrame {
 		panelLecDetail.add(comboBox_Cent2);
 		
 		comboBox_Build2 = new JComboBox();
+		comboBox_Build2.setFont(new Font("Dialog", Font.PLAIN, 13));
 		comboBox_Build2.setBounds(187, 403, 221, 21);
 		panelLecDetail.add(comboBox_Build2);
 		
 		String [] level2 = {"(select)", "1", "2", "3", "4", "5","6"};
 		comboBox_Lev2 = new JComboBox(level2);
+		comboBox_Lev2.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		comboBox_Lev2.setBounds(187, 139, 221, 21);
 		panelLecDetail.add(comboBox_Lev2);
 		
@@ -924,7 +958,7 @@ public class Lecturer extends JFrame {
 				try {
 					Class.forName("com.mysql.cj.jdbc.Driver");
                     Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
-                    String query = "select id, lecturer_name, lecturer_ID, lecturer_level, lecturer_rank, faculty, department, center, building from lecturer";
+                    String query = "select id as 'ID', lecturer_name as 'Lecturer Name', lecturer_ID as 'Lecturer ID', lecturer_level as 'Level', lecturer_rank as 'Rank', faculty as 'Faculty', department as 'Department', center as 'Center', building as 'Building' from lecturer";
                     Statement sta = connection.createStatement();
                     ResultSet rs1 = sta.executeQuery(query);
                     
@@ -942,6 +976,7 @@ public class Lecturer extends JFrame {
 		panellecdetail.add(btnRefresh);
 		
 		textFieldSeacrh = new JTextField();
+		textFieldSeacrh.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textFieldSeacrh.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -952,7 +987,7 @@ public class Lecturer extends JFrame {
 					
 					 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
 
-			         String query = "SELECT id,lecturer_name,lecturer_ID,lecturer_level,lecturer_rank,faculty,department,center,building FROM lecturer where lecturer_name LIKE '%"+search+"%'";
+			         String query = "select id as 'ID', lecturer_name as 'Lecturer Name', lecturer_ID as 'Lecturer ID', lecturer_level as 'Level', lecturer_rank as 'Rank', faculty as 'Faculty', department as 'Department', center as 'Center', building as 'Building' FROM lecturer where lecturer_name LIKE '%"+search+"%'";
 			     
 			         PreparedStatement pst = connection.prepareStatement(query);
 
@@ -976,6 +1011,7 @@ public class Lecturer extends JFrame {
 		panellecdetail.add(scrollPane);
 		
 		table_lecturer = new JTable();
+		table_lecturer.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table_lecturer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -1015,6 +1051,10 @@ public class Lecturer extends JFrame {
 		panellecdetail.add(lblNewLabel_2_2_6_2);
 		
 		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnSearch.setBackground(SystemColor.activeCaption);
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnSearch.setBounds(1188, 104, 106, 31);
@@ -1043,36 +1083,43 @@ public class Lecturer extends JFrame {
 		panel_1_1.add(lblNewLabel_2_2_1_2_7);
 		
 		textFieldMon = new JTextField();
+		textFieldMon.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldMon.setColumns(10);
 		textFieldMon.setBounds(175, 115, 241, 26);
 		panel_1_1.add(textFieldMon);
 		
 		textFieldTue = new JTextField();
+		textFieldTue.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldTue.setColumns(10);
 		textFieldTue.setBounds(175, 161, 241, 26);
 		panel_1_1.add(textFieldTue);
 		
 		textFieldWed = new JTextField();
+		textFieldWed.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldWed.setColumns(10);
 		textFieldWed.setBounds(175, 207, 241, 26);
 		panel_1_1.add(textFieldWed);
 		
 		textFieldThurs = new JTextField();
+		textFieldThurs.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldThurs.setColumns(10);
 		textFieldThurs.setBounds(175, 254, 241, 26);
 		panel_1_1.add(textFieldThurs);
 		
 		textFieldFri = new JTextField();
+		textFieldFri.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldFri.setColumns(10);
 		textFieldFri.setBounds(175, 301, 241, 27);
 		panel_1_1.add(textFieldFri);
 		
 		textFieldSat = new JTextField();
+		textFieldSat.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldSat.setColumns(10);
 		textFieldSat.setBounds(175, 353, 241, 27);
 		panel_1_1.add(textFieldSat);
 		
 		textFieldSun = new JTextField();
+		textFieldSun.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldSun.setColumns(10);
 		textFieldSun.setBounds(175, 402, 241, 26);
 		panel_1_1.add(textFieldSun);
@@ -1172,7 +1219,7 @@ public class Lecturer extends JFrame {
 		JLabel lblNewLabel_empName = new JLabel("");
 		lblNewLabel_empName.setForeground(SystemColor.textInactiveText);
 		lblNewLabel_empName.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_empName.setBounds(175, 57, 116, 13);
+		lblNewLabel_empName.setBounds(175, 57, 241, 13);
 		panel_1_1.add(lblNewLabel_empName);
 		
 		JButton btnClear_2 = new JButton("Clear");
@@ -1242,6 +1289,7 @@ public class Lecturer extends JFrame {
 		panelDayshours.add(btnSearch_1);
 		
 		textFieldSearchDays = new JTextField();
+		textFieldSearchDays.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textFieldSearchDays.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -1282,6 +1330,7 @@ public class Lecturer extends JFrame {
 		panelDayshours.add(scrollPane_1);
 		
 		table_hours = new JTable();
+		table_hours.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table_hours.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
