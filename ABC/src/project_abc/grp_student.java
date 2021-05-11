@@ -652,7 +652,7 @@ public class grp_student extends JFrame {
 		panel_2.add(btn_view_clear);
 		
 		lblNewLabel_8 = new JLabel("Update/Delete Student Group Details ");
-		lblNewLabel_8.setBounds(111, 42, 291, 38);
+		lblNewLabel_8.setBounds(95, 42, 330, 38);
 		View_groups.add(lblNewLabel_8);
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setForeground(Color.BLACK);
@@ -809,6 +809,13 @@ public class grp_student extends JFrame {
 		txt_search.setBounds(1211, 42, 185, 32);
 		View_groups.add(txt_search);
 		txt_search.setColumns(10);
+		
+		JLabel lblNewLabel_8_1_1_1 = new JLabel("Student Group  Details");
+		lblNewLabel_8_1_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_8_1_1_1.setForeground(Color.BLACK);
+		lblNewLabel_8_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_8_1_1_1.setBounds(859, 90, 291, 38);
+		View_groups.add(lblNewLabel_8_1_1_1);
 		
 		JButton btn_view_groups = new JButton("View Student Groups");
 		btn_view_groups.addActionListener(new ActionListener() {
