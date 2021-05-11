@@ -142,15 +142,27 @@ public class Consecutive extends JFrame {
 				try {
 					java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
 					
+					//load details from session table
 					 String query = "select id as 'ID',sessionCode as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from session";
 	                    
 					 PreparedStatement st =  connection.prepareStatement(query);
 	                    ResultSet rs = st.executeQuery();
 		                   
 	                   table_session.setModel(DbUtils.resultSetToTableModel(rs));
+	                   
+	                   st.close();
+	                   
+	                   
+	                   //load details from consecutive table
+	                   String query2 = "select con_id as 'ID',con_Code as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from consecutive";
 	                    
+						 PreparedStatement st1 =  connection.prepareStatement(query2);
+		                    ResultSet rs1 = st1.executeQuery();
+			                   
+		                   table_consecutive.setModel(DbUtils.resultSetToTableModel(rs1)); 
 	                    
-	                    st.close();
+	                    st1.close();
+	                    
 	                    
 	                    
 					
@@ -234,5 +246,66 @@ public class Consecutive extends JFrame {
 		btn_addsession.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btn_addsession.setBounds(1218, 481, 116, 27);
 		contentPane.add(btn_addsession);
+		
+		JButton btn_deletecon = new JButton("Delete Consecutive Rows");
+		btn_deletecon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int selectedRow = table_consecutive.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table_consecutive.getModel();
+			     String con_id =(model.getValueAt(selectedRow, 0).toString());
+			     
+			     try {
+			    	 java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
+						
+						String query = "DELETE  FROM consecutive WHERE con_id = "+con_id;
+						PreparedStatement pst = connection.prepareStatement(query);
+						int rs = pst.executeUpdate(query);		  
+						
+						if (rs == 0) {
+				             JOptionPane.showMessageDialog(btn_deletecon, "This is alredy exist");
+				         } else {
+				             JOptionPane.showMessageDialog(btn_deletecon,"Student Group details successfully Deleted");
+				         }
+				         connection.close();
+	                   
+						
+					}
+					catch (Exception exception) {
+				         exception.printStackTrace();
+				     }
+					
+			     try {
+						java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
+						
+						
+		               //load details from consecutive table
+		                   String query2 = "select con_id as 'ID',con_Code as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from consecutive";
+		                    
+							 PreparedStatement st1 =  connection.prepareStatement(query2);
+			                    ResultSet rs1 = st1.executeQuery();
+				                   
+			                   table_consecutive.setModel(DbUtils.resultSetToTableModel(rs1)); 
+		                    
+		                    st1.close();
+		                    
+		                    
+		                    
+						
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			     
+			     
+			     
+			     
+				
+				
+			}
+		});
+		btn_deletecon.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btn_deletecon.setBounds(901, 481, 189, 27);
+		contentPane.add(btn_deletecon);
 	}
 }
