@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -31,6 +33,8 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import com.mysql.cj.xdevapi.PreparableStatement;
 
 public class Session extends JFrame {
 
@@ -58,6 +62,15 @@ public class Session extends JFrame {
 	private JComboBox comboBox_code;
 	private JComboBox comboBox_tag;
 	private JComboBox comboBox_grp;
+	private JComboBox comboBox_Lec2;
+	private JComboBox combo_lec2_1;
+	private JComboBox combo_lec2;
+	private JComboBox combo_sub2;
+	private JComboBox combo_lec2_subcode;
+	private JComboBox combo_sess_grpid;
+	private JComboBox combo_sess_tag;
+	private JSpinner spinnerSession;
+	private JLabel lblNewLabel_level_required_1;
 	/**
 	 * Launch the application.
 	 */
@@ -81,6 +94,109 @@ public class Session extends JFrame {
 		layeredPane.repaint();
 		layeredPane.revalidate();
 		
+	}
+	
+	public void fillComboBoxLec()
+	{
+		 try {
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+		     Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+		       
+		       String query = "select*from lecturer";
+		       PreparedStatement pStatement = conne.prepareStatement(query);
+		       ResultSet rSet=pStatement.executeQuery();
+		       
+		       while (rSet.next()) {
+		    	   comboBox_Lec1.addItem(rSet.getString("lecturer_name"));
+		    	   comboBox_Lec2.addItem(rSet.getString("lecturer_name"));
+		    	   combo_lec2_1.addItem(rSet.getString("lecturer_name"));
+		    	   combo_lec2.addItem(rSet.getString("lecturer_name"));
+			}
+		       conne.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+	public void fillComboBoxSubName()
+	{
+		 try {
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+		       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+		       
+		       String query = "select*from subject";
+		       PreparedStatement pStatement = conne.prepareStatement(query);
+		       ResultSet rSet=pStatement.executeQuery();
+		       
+		       while (rSet.next()) {
+		    	   comboBox_sub.addItem(rSet.getString("sub_name"));
+		    	   combo_sub2.addItem(rSet.getString("sub_name"));
+			}
+		       conne.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void fillComboBoxSubcode()
+	{
+		 try {
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+		       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+		       
+		       String query = "select*from subject";
+		       PreparedStatement pStatement = conne.prepareStatement(query);
+		       ResultSet rSet=pStatement.executeQuery();
+		       
+		       while (rSet.next()) {
+		    	   comboBox_code.addItem(rSet.getString("sub_code"));
+		    	   combo_lec2_subcode.addItem(rSet.getString("sub_code"));
+			}
+		       conne.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void fillComboBoxGrpID()
+	{
+		 try {
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+		       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+		       
+		       String query = "select*from student_grp";
+		       PreparedStatement pStatement = conne.prepareStatement(query);
+		       ResultSet rSet=pStatement.executeQuery();
+		       
+		       while (rSet.next()) {
+		    	   comboBox_grp.addItem(rSet.getString("group_id"));
+		    	   combo_sess_grpid.addItem(rSet.getString("group_id"));
+			}
+		       conne.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void fillComboBoxTag()
+	{
+		 try {
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+		       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+		       
+		       String query = "select*from tag";
+		       PreparedStatement pStatement = conne.prepareStatement(query);
+		       ResultSet rSet=pStatement.executeQuery();
+		       
+		       while (rSet.next()) {
+		    	   comboBox_tag.addItem(rSet.getString("related_tag"));
+		    	   combo_sess_tag.addItem(rSet.getString("related_tag"));
+			}
+		       conne.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Create the frame.
@@ -263,24 +379,45 @@ public class Session extends JFrame {
 		textField_noOfstu.setBounds(256, 266, 284, 26);
 		panel.add(textField_noOfstu);
 		
-		JSpinner spinnerSession = new JSpinner();
+		spinnerSession = new JSpinner();
 		spinnerSession.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinnerSession.setBounds(698, 266, 301, 26);
 		panel.add(spinnerSession);
 		
-		JComboBox comboBox_Lec2 = new JComboBox();
+		comboBox_Lec2 = new JComboBox();
 		comboBox_Lec2.setBounds(569, 94, 284, 21);
 		panel.add(comboBox_Lec2);
 		
 		JButton session_generate = new JButton("Generate Session");
+		session_generate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//String sCode = (String)textFieldSessionCode.getText();
+				String lec1 = (String)comboBox_Lec1.getSelectedItem();
+				String lec2 = (String)comboBox_Lec2.getSelectedItem();
+				String subName = (String)comboBox_sub.getSelectedItem();
+				String subCode = (String)comboBox_code.getSelectedItem();
+				String stdgrp = (String)comboBox_grp.getSelectedItem();
+				String tag = (String)comboBox_tag.getSelectedItem();
+				String num = (String)textField_noOfstu.getText();
+				int dur = (int)spinnerSession.getValue();
+				
+				
+					String session = "     "+lec1+"  - ("+lec2+") -  "+subName+"  -  "+subCode+"  -  "+stdgrp+"  -  "+tag+"  -  "+num+"  -  "+dur;
+					textField.setText(session);
+					//lblNewLabel_level_required_1.setText("");
+					
+			}
+		});
 		session_generate.setFont(new Font("Tahoma", Font.BOLD, 14));
 		session_generate.setBounds(463, 321, 181, 31);
 		panel.add(session_generate);
 		
 		textField = new JTextField();
+		textField.setForeground(new Color(0, 51, 102));
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textField.setColumns(10);
-		textField.setBounds(236, 369, 617, 38);
+		textField.setBounds(308, 369, 488, 38);
 		panel.add(textField);
 		
 		JButton Add = new JButton("Add Session");
@@ -326,6 +463,12 @@ public class Session extends JFrame {
 		clear.setBounds(596, 435, 135, 33);
 		panel.add(clear);
 		
+		lblNewLabel_level_required_1 = new JLabel("");
+		lblNewLabel_level_required_1.setForeground(Color.RED);
+		lblNewLabel_level_required_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel_level_required_1.setBounds(256, 70, 282, 13);
+		panel.add(lblNewLabel_level_required_1);
+		
 		panel_manage = new JPanel();
 		panel_manage.setBackground(Color.WHITE);
 		layeredPane.add(panel_manage, "name_689261342226900");
@@ -352,7 +495,12 @@ public class Session extends JFrame {
 		spinner_1.setBounds(172, 375, 206, 20);
 		panel_1.add(spinner_1);
 		
+		
 		JButton updateSession = new JButton("Update");
+		updateSession.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		updateSession.setFont(new Font("Tahoma", Font.BOLD, 13));
 		updateSession.setBounds(25, 435, 85, 33);
 		panel_1.add(updateSession);
@@ -398,27 +546,27 @@ public class Session extends JFrame {
 		lblNewLabelSub_1_1_1.setBounds(25, 155, 137, 19);
 		panel_1.add(lblNewLabelSub_1_1_1);
 		
-		JComboBox combo_lec2 = new JComboBox(new Object[]{});
+		combo_lec2 = new JComboBox(new Object[]{});
 		combo_lec2.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		combo_lec2.setBounds(172, 105, 206, 21);
 		panel_1.add(combo_lec2);
 		
-		JComboBox combo_lec2_1 = new JComboBox(new Object[]{});
+		combo_lec2_1 = new JComboBox(new Object[]{});
 		combo_lec2_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		combo_lec2_1.setBounds(172, 72, 206, 21);
 		panel_1.add(combo_lec2_1);
 		
-		JComboBox combo_lec2_2 = new JComboBox(new Object[]{});
-		combo_lec2_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		combo_lec2_2.setBounds(172, 155, 206, 21);
-		panel_1.add(combo_lec2_2);
+		combo_sub2 = new JComboBox(new Object[]{});
+		combo_sub2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		combo_sub2.setBounds(172, 155, 206, 21);
+		panel_1.add(combo_sub2);
 		
-		JComboBox combo_lec2_subcode = new JComboBox(new Object[]{});
+		combo_lec2_subcode = new JComboBox(new Object[]{});
 		combo_lec2_subcode.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		combo_lec2_subcode.setBounds(172, 199, 206, 21);
 		panel_1.add(combo_lec2_subcode);
 		
-		JComboBox combo_sess_grpid = new JComboBox(new Object[]{});
+		combo_sess_grpid = new JComboBox(new Object[]{});
 		combo_sess_grpid.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		combo_sess_grpid.setBounds(172, 243, 206, 21);
 		panel_1.add(combo_sess_grpid);
@@ -434,7 +582,7 @@ public class Session extends JFrame {
 		lblTag.setBounds(25, 287, 137, 19);
 		panel_1.add(lblTag);
 		
-		JComboBox combo_sess_tag = new JComboBox(new Object[]{});
+		combo_sess_tag = new JComboBox(new Object[]{});
 		combo_sess_tag.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		combo_sess_tag.setBounds(172, 287, 206, 21);
 		panel_1.add(combo_sess_tag);
@@ -509,8 +657,11 @@ public class Session extends JFrame {
 		btnNewButtonManagePage.setBounds(1312, 139, 193, 31);
 		contentPane.add(btnNewButtonManagePage);
 		
-		
-		
+		fillComboBoxLec();
+		fillComboBoxSubName();
+		fillComboBoxSubcode();
+		fillComboBoxGrpID();
+		fillComboBoxTag();
 		
 	}
 }
