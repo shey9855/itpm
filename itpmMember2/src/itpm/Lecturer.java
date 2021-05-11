@@ -126,7 +126,7 @@ public class Lecturer extends JFrame {
 		JLabel lblNewLabel = new JLabel("ABC Institute");
 		lblNewLabel.setBackground(new Color(0, 0, 102));
 		lblNewLabel.setForeground(new Color(0, 0, 102));
-		lblNewLabel.setBounds(477, 24, 608, 80);
+		lblNewLabel.setBounds(20, 21, 479, 80);
 		lblNewLabel.setFont(new Font("Roboto Slab", Font.BOLD, 70));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
@@ -527,6 +527,9 @@ public class Lecturer extends JFrame {
 		panellec.add(lblNewLabel_2_1);
 		
 		JButton btnNewButtonSavelec = new JButton("ADD");
+		btnNewButtonSavelec.setBorder(new LineBorder(new Color(0, 153, 0)));
+		btnNewButtonSavelec.setForeground(new Color(0, 0, 0));
+		btnNewButtonSavelec.setBackground(new Color(0, 153, 0));
 		btnNewButtonSavelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -585,6 +588,8 @@ public class Lecturer extends JFrame {
 		panellec.add(btnNewButtonSavelec);
 		
 		JButton btnClear = new JButton("Clear");
+		btnClear.setBorder(new LineBorder(new Color(153, 204, 204)));
+		btnClear.setBackground(new Color(153, 204, 204));
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -694,6 +699,7 @@ public class Lecturer extends JFrame {
 		panelLecDetail.add(lblNewLabel_2_2_5_1_1);
 		
 		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setBackground(new Color(255, 204, 51));
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -770,6 +776,7 @@ public class Lecturer extends JFrame {
 		panelLecDetail.add(btnClear_1);
 		
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.setBackground(new Color(255, 51, 0));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				

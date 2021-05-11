@@ -140,6 +140,11 @@ public class Main extends JFrame {
 		btnNewButton_5.setFont(new Font("Ink Free", Font.BOLD, 16));
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				Session session = new Session();
+				session.show();
+				
+				dispose();
 			}
 		});
 		btnNewButton_5.setBounds(618, 580, 308, 138);

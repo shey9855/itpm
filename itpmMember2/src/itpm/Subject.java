@@ -96,7 +96,7 @@ public class Subject extends JFrame {
 		JLabel lblNewLabel = new JLabel("ABC Institute");
 		lblNewLabel.setBackground(new Color(0, 0, 102));
 		lblNewLabel.setForeground(new Color(0, 0, 102));
-		lblNewLabel.setBounds(477, 24, 608, 80);
+		lblNewLabel.setBounds(22, 24, 472, 80);
 		lblNewLabel.setFont(new Font("Roboto Slab", Font.BOLD, 70));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
