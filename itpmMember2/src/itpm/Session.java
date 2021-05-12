@@ -502,6 +502,55 @@ public class Session extends JFrame {
 		JButton updateSession = new JButton("Update");
 		updateSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				String sessionCode = session_code_1.getText();
+			    String lecturer_1 =(String)combo_lec2_1.getSelectedItem();
+			    String lecturer_2 =(String)combo_lec2.getSelectedItem();
+			    String subjectName =(String)combo_sub2.getSelectedItem();
+			    String subjectCode =(String)combo_lec2_subcode.getSelectedItem();
+			    String groupID =(String)combo_sess_grpid.getSelectedItem();
+			    String tag =(String)combo_sess_tag.getSelectedItem();
+			    String noOfStudents = textField_studentCount.getText();
+			    int duration = (int) spinner_1.getValue();
+			     
+			     String driverName = "com.mysql.cj.jdbc.Driver";
+			     
+			     int selectedRow = table_session.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table_session.getModel();
+			     String id =(model.getValueAt(selectedRow, 0).toString());
+			     
+			     try {
+			    	 
+			         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+
+			         String query = "UPDATE session set sessionCode='"+sessionCode+"', lecturer_1='"+lecturer_1+"', lecturer_2='"+lecturer_2+"', subjectName='"+subjectName+"', subjectCode = '"+subjectCode+"' , groupID = '"+groupID+"', tag = '"+tag+"', noOfStudents = '"+noOfStudents+"', duration = '"+duration+"'where id="+id;
+			     
+			         PreparedStatement pst = connection.prepareStatement(query);
+			        
+			         int x = pst.executeUpdate(query);
+			         
+			         connection.close();
+			         JOptionPane.showMessageDialog(null, "Updated Successfully");
+			     } catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+			     
+			     try {
+						Class.forName("com.mysql.cj.jdbc.Driver");
+	                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+	                    String query = "select * from session";
+	                    Statement sta = connection.createStatement();
+	                    ResultSet rs1 = sta.executeQuery(query);
+	                    
+	                    table_session.setModel(DbUtils.resultSetToTableModel(rs1));
+	                    connection.close();
+	                    
+	                    
+	                    
+	                } catch (Exception exception) {
+	                	
+	                    exception.printStackTrace();
+	                }
 					
 			}
 		});
