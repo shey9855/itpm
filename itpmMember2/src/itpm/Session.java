@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -41,6 +42,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.DefaultComboBoxModel;
 
 public class Session extends JFrame {
 
@@ -68,6 +70,7 @@ public class Session extends JFrame {
 	private JComboBox comboBox_tag;
 	private JComboBox comboBox_grp;
 	private JComboBox comboBox_Lec2;
+	private JComboBox comboBox_search;
 	private JComboBox combo_lec2_1;
 	private JComboBox combo_lec2;
 	private JComboBox combo_sub2;
@@ -100,7 +103,6 @@ public class Session extends JFrame {
 		layeredPane.add(panel);
 		layeredPane.repaint();
 		layeredPane.revalidate();
-		
 	}
 	
 	public void fillComboBoxLec()
@@ -205,6 +207,25 @@ public class Session extends JFrame {
 			e.printStackTrace();
 		}
 	}
+	/*public void fillComboBoxSearch()
+	{
+		 try {
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+		       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+		       
+		       String query = "select*from session";
+		       PreparedStatement pStatement = conne.prepareStatement(query);
+		       ResultSet rSet=pStatement.executeQuery();
+		       
+		       while (rSet.next()) {
+		    	   comboBox_search.addItem(rSet.getString("sessionCode"));		    	   
+			}
+		       conne.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}*/
 	/**
 	 * Create the frame.
 	 */
@@ -715,7 +736,7 @@ public class Session extends JFrame {
 		panel_manage.add(lblNewLabel_4);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(464, 140, 769, 427);
+		scrollPane.setBounds(464, 165, 769, 402);
 		panel_manage.add(scrollPane);
 		
 		table_session = new JTable();
@@ -780,17 +801,51 @@ public class Session extends JFrame {
 		lblNewLabel_4_1.setBounds(761, 71, 145, 21);
 		panel_manage.add(lblNewLabel_4_1);
 		
-		JButton btnSearch_session = new JButton("Search");
-		btnSearch_session.setFont(new Font("Tahoma", Font.BOLD, 13));
+		JButton btnSearch_session = new JButton("Search..");
+		btnSearch_session.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 		btnSearch_session.setBackground(SystemColor.activeCaption);
-		btnSearch_session.setBounds(1135, 89, 98, 33);
+		btnSearch_session.setBounds(1135, 122, 98, 33);
 		panel_manage.add(btnSearch_session);
 		
+		comboBox_search = new JComboBox();
+		comboBox_search.setModel(new DefaultComboBoxModel(new String[] {"sessionCode", "lecturer_1", "subjectName", "groupID", "tag"}));
+		comboBox_search.setBounds(716, 122, 193, 21);
+		panel_manage.add(comboBox_search);
+		
 		textField_1_seacrh = new JTextField();
+		textField_1_seacrh.addKeyListener(new KeyAdapter() {
+		@Override
+			public void keyReleased(KeyEvent e) {
+			
+			try {
+				//Class.forName("com.mysql.cj.jdbc.Driver");
+				
+				String selection = (String)comboBox_search.getSelectedItem();
+				String search3 = textField_1_seacrh.getText();
+                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                
+                String query = "select id as 'ID', sessionCode as 'Session Code', lecturer_1 as 'Lecturer 1', lecturer_2 as 'Lecturer 2', subjectName as 'Subject Name', subjectCode as 'Subject Code', groupID as 'Group ID', tag as 'Tag',noOfStudents as 'No. of Students', duration as 'Duration' from session where "+selection+" LIKE '%"+search3+"%'";
+                PreparedStatement pst = connection.prepareStatement(query);
+                //pst.setString(1, textField_1_seacrh.getText());
+                ResultSet rs1 = pst.executeQuery(query);
+                
+                table_session.setModel(DbUtils.resultSetToTableModel(rs1));
+                
+                pst.close();
+                
+            } catch (Exception exception) {
+            	
+                exception.printStackTrace();
+            }
+		      
+			
+		}
+		});
 		textField_1_seacrh.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textField_1_seacrh.setColumns(10);
-		textField_1_seacrh.setBounds(919, 89, 206, 33);
-		panel_manage.add(textField_1_seacrh);
+		textField_1_seacrh.setBounds(919, 122, 206, 30);
+		panel_manage.add(textField_1_seacrh);		
+		
 		
 		JButton add_button = new JButton("Add Session");
 		add_button.addActionListener(new ActionListener() {
@@ -818,6 +873,7 @@ public class Session extends JFrame {
 		fillComboBoxSubcode();
 		fillComboBoxGrpID();
 		fillComboBoxTag();
+		//fillComboBoxSearch();
 		
 	}
 }

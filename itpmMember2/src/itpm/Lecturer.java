@@ -42,6 +42,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.DefaultComboBoxModel;
 
 public class Lecturer extends JFrame {
 
@@ -84,6 +85,7 @@ public class Lecturer extends JFrame {
 	private JTextField textFieldSun;
 	private JTextField textFieldSearchDays;
 	private JTable table_hours;
+	private JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -972,12 +974,12 @@ public class Lecturer extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				
 				try {
-					
+					 String select = (String)comboBox.getSelectedItem();
 					 String search = textFieldSeacrh.getText();
 					
 					 Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
 
-			         String query = "select id as 'ID', lecturer_name as 'Lecturer Name', lecturer_ID as 'Lecturer ID', lecturer_level as 'Level', lecturer_rank as 'Rank', faculty as 'Faculty', department as 'Department', center as 'Center', building as 'Building' FROM lecturer where lecturer_name LIKE '%"+search+"%'";
+			         String query = "select id as 'ID', lecturer_name as 'Lecturer Name', lecturer_ID as 'Lecturer ID', lecturer_level as 'Level', lecturer_rank as 'Rank', faculty as 'Faculty', department as 'Department', center as 'Center', building as 'Building' FROM lecturer where "+select+" LIKE '%"+search+"%'";
 			     
 			         PreparedStatement pst = connection.prepareStatement(query);
 
@@ -993,7 +995,7 @@ public class Lecturer extends JFrame {
 			}
 		});
 		textFieldSeacrh.setColumns(10);
-		textFieldSeacrh.setBounds(954, 104, 221, 31);
+		textFieldSeacrh.setBounds(959, 104, 221, 27);
 		panellecdetail.add(textFieldSeacrh);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -1049,6 +1051,11 @@ public class Lecturer extends JFrame {
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnSearch.setBounds(1188, 104, 106, 31);
 		panellecdetail.add(btnSearch);
+		
+		comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"lecturer_name", "lecturer_level", "center", "faculty", "department"}));
+		comboBox.setBounds(728, 104, 221, 27);
+		panellecdetail.add(comboBox);
 		
 		panelDayshours = new JPanel();
 		panelDayshours.setBackground(new Color(255, 255, 255));
