@@ -288,8 +288,6 @@ public class Lecturer extends JFrame {
 		btnNewButtongeneraterank.setBounds(90, 189, 324, 31);
 		panel.add(btnNewButtongeneraterank);
 		
-		
-		
 		JLabel lblNewLabel_2_2_5_1 = new JLabel("Faculty");
 		lblNewLabel_2_2_5_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_2_2_5_1.setBounds(21, 291, 149, 24);
@@ -308,8 +306,7 @@ public class Lecturer extends JFrame {
 					comboBox_Dept.addItem("(select)");
 					comboBox_Dept.addItem("IT");
 					comboBox_Dept.addItem("CSSE");
-					comboBox_Dept.addItem("CSE");
-					
+					comboBox_Dept.addItem("CSE");					
 				}
 				else if(comboBox_Faculty.getSelectedItem().equals("Engineering")) {
 					
@@ -321,7 +318,7 @@ public class Lecturer extends JFrame {
 					comboBox_Dept.addItem("Materials E");
 					comboBox_Dept.addItem("Civil E");
 					comboBox_Dept.addItem("QS");
-					}
+				}
 				else if(comboBox_Faculty.getSelectedItem().equals("Business Management")) {
 					
 					//comboBox_dept.setSelectedItem(null);
@@ -329,8 +326,7 @@ public class Lecturer extends JFrame {
 					comboBox_Dept.addItem("(select)");
 					comboBox_Dept.addItem("Accounting & Finance");
 					comboBox_Dept.addItem("Management");
-					comboBox_Dept.addItem("Marketing");
-					
+					comboBox_Dept.addItem("Marketing");					
 				}
 				else if(comboBox_Faculty.getSelectedItem().equals("Humanities & Sciences")) {
 					
@@ -341,7 +337,7 @@ public class Lecturer extends JFrame {
 					comboBox_Dept.addItem("Nursing");
 					comboBox_Dept.addItem("Law");
 					comboBox_Dept.addItem("Physical Sciences");					
-			}
+				}
 			}
 		});
 		comboBox_Faculty.setBounds(187, 295, 282, 21);
@@ -368,9 +364,7 @@ public class Lecturer extends JFrame {
 					comboBox_Build.addItem("New CyberLab");
 					comboBox_Build.addItem("A501");
 					comboBox_Build.addItem("B7L2");
-					comboBox_Build.addItem("Architecture Building");
-
-					
+					comboBox_Build.addItem("Architecture Building");					
 				}
 				else if(comboBox_Center.getSelectedItem().equals("Kandy")) {
 					
@@ -379,9 +373,8 @@ public class Lecturer extends JFrame {
 					comboBox_Build.addItem("(select)");
 					comboBox_Build.addItem("301");
 					comboBox_Build.addItem("302");
-					comboBox_Build.addItem("201 Lab");
-					
-					}
+					comboBox_Build.addItem("201 Lab");					
+				}
 				else if(comboBox_Center.getSelectedItem().equals("Kurunagala")) {
 					
 					//comboBox_dept.setSelectedItem(null);
@@ -389,8 +382,7 @@ public class Lecturer extends JFrame {
 					comboBox_Build.addItem("(select)");
 					comboBox_Build.addItem("IT Building");
 					comboBox_Build.addItem("New SoftwareLab");
-					comboBox_Build.addItem("Electrical Lab");
-					
+					comboBox_Build.addItem("Electrical Lab");					
 				}
 				else if(comboBox_Center.getSelectedItem().equals("Colombo")) {
 					
@@ -400,9 +392,7 @@ public class Lecturer extends JFrame {
 					comboBox_Build.addItem("BM New");
 					comboBox_Build.addItem("IT Old");
 					comboBox_Build.addItem("Physical lab");					
-			}
-				
-				
+				}				
 			}
 			
 		});
@@ -420,7 +410,6 @@ public class Lecturer extends JFrame {
 		comboBox_Lev.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				
 				lblNewLabel_level_required_1.setText("");
 			}
 		});
@@ -531,6 +520,7 @@ public class Lecturer extends JFrame {
 		btnNewButtonSavelec.setForeground(new Color(0, 0, 0));
 		btnNewButtonSavelec.setBackground(new Color(0, 153, 0));
 		btnNewButtonSavelec.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				
 				String lec_name = textField_lecName.getText();
@@ -553,16 +543,14 @@ public class Lecturer extends JFrame {
 					lblNewLabel_name_required.setText("Lecturer's name is required!");
 					lblNewLabel_ID_required.setText("Lecturer's Employee ID Number is required!");
 				}
-				
 				else if(textField_lecName.getText().trim().isEmpty()) {
 					lblNewLabel_name_required.setText("Lecturer's name is required!");
                 }
                 else if(textField_empID.getText().trim().isEmpty()) {
                 	lblNewLabel_ID_required.setText("Lecturer's Employee ID Number is required!");
                 }
-				
-                else {
-                	try {
+				else {					
+                	try{
                 		Class.forName("com.mysql.cj.jdbc.Driver");
                 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
 
@@ -575,8 +563,7 @@ public class Lecturer extends JFrame {
                 		lblNewLabel_name_required.setText("");
                 		lblNewLabel_ID_required.setText("");
                    
-
-                    }catch (Exception exception) {
+                	}catch (Exception exception) {
                     	exception.printStackTrace();
                     	JOptionPane.showMessageDialog(null, "Lecturer ID is already taken");
                     }
@@ -701,42 +688,39 @@ public class Lecturer extends JFrame {
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.setBackground(new Color(255, 204, 51));
 		btnUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {
 				
-				String lec_name = textFieldName_1.getText();
-				String lec_id = textFieldEmpID_1.getText();
-				String level = (String)comboBox_Lev2.getSelectedItem();
-				String rank = textFieldupdaterank.getText();
-				String facString = (String)comboBox_Fac2.getSelectedItem();
-				String deptString = (String)comboBox_Dept2.getSelectedItem();
-				String centString = (String)comboBox_Cent2.getSelectedItem();
-				String buildString = (String)comboBox_Build2.getSelectedItem();
+			String lec_name = textFieldName_1.getText();
+			String lec_id = textFieldEmpID_1.getText();
+			String level = (String)comboBox_Lev2.getSelectedItem();
+			String rank = textFieldupdaterank.getText();
+			String facString = (String)comboBox_Fac2.getSelectedItem();
+			String deptString = (String)comboBox_Dept2.getSelectedItem();
+			String centString = (String)comboBox_Cent2.getSelectedItem();
+			String buildString = (String)comboBox_Build2.getSelectedItem();
 
-				int selectedRow = table_lecturer.getSelectedRow();
-			     DefaultTableModel model = (DefaultTableModel) table_lecturer.getModel();
-			     String id =(model.getValueAt(selectedRow, 0).toString());
+			int selectedRow = table_lecturer.getSelectedRow();
+			DefaultTableModel model = (DefaultTableModel) table_lecturer.getModel();
+			String id =(model.getValueAt(selectedRow, 0).toString());
 				
-				try {
-			    	 
-			         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
-
-			         String query = "UPDATE lecturer set lecturer_name='"+lec_name+"', lecturer_ID='"+lec_id+"', lecturer_level='"+level+"', lecturer_rank='"+rank+"', faculty = '"+facString+"' , department = '"+deptString+"', center = '"+centString+"', building = '"+buildString+"'where id="+id;
-			     
-			         PreparedStatement pst = connection.prepareStatement(query);
-			        
-			         int x = pst.executeUpdate(query);
+				try{			    	 
+			        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+			        String query = "UPDATE lecturer set lecturer_name='"+lec_name+"', lecturer_ID='"+lec_id+"', lecturer_level='"+level+"', lecturer_rank='"+rank+"', faculty = '"+facString+"' , department = '"+deptString+"', center = '"+centString+"', building = '"+buildString+"'where id="+id;			     
+			        PreparedStatement pst = connection.prepareStatement(query);			        
+			        int x = pst.executeUpdate(query);
 			         
-			         connection.close();
-			         JOptionPane.showMessageDialog(null, "Updated Successfully");
-			     } catch (Exception exception) {
-			         exception.printStackTrace();
-			     }
+			        connection.close();
+			        JOptionPane.showMessageDialog(null, "Updated Successfully");
+			         
+			    }catch (Exception exception) {
+			        exception.printStackTrace();
+			    }
 				
-				//int selectedRow=table.getSelectedRow();
-                DefaultTableModel model1=(DefaultTableModel) table_lecturer.getModel();
-				//String id=(model.getValueAt(selectedRow, 0).toString());
+			//int selectedRow=table.getSelectedRow();
+            DefaultTableModel model1=(DefaultTableModel) table_lecturer.getModel();
+            //String id=(model.getValueAt(selectedRow, 0).toString());
 				
-				try {
+				try{
 					Class.forName("com.mysql.cj.jdbc.Driver");
                     Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
                     String query = "select id as 'ID', lecturer_name as 'Lecturer Name', lecturer_ID as 'Lecturer ID', lecturer_level as 'Level', lecturer_rank as 'Rank', faculty as 'Faculty', department as 'Department', center as 'Center', building as 'Building' from lecturer";
@@ -746,10 +730,9 @@ public class Lecturer extends JFrame {
                     table_lecturer.setModel(DbUtils.resultSetToTableModel(rs1));
                     connection.close();
                                        
-                } catch (Exception exception) {
-                	
-                    exception.printStackTrace();
-                }
+               }catch (Exception exception) {
+            	    exception.printStackTrace();
+               }
 				
 			}
 		});

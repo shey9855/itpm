@@ -36,6 +36,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.mysql.cj.xdevapi.PreparableStatement;
 
+import net.proteanit.sql.DbUtils;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class Session extends JFrame {
 
 	private JPanel contentPane;
@@ -55,7 +59,6 @@ public class Session extends JFrame {
 	private JTextField session_code_1;
 	private JTextField textField_studentCount;
 	private JTable table_session;
-	private JTable table;
 	private JTextField textField_1_seacrh;
 	private JComboBox comboBox_Lec1;
 	private JComboBox comboBox_sub;
@@ -71,6 +74,7 @@ public class Session extends JFrame {
 	private JComboBox combo_sess_tag;
 	private JSpinner spinnerSession;
 	private JLabel lblNewLabel_level_required_1;
+	private JSpinner spinner_1;
 	/**
 	 * Launch the application.
 	 */
@@ -255,17 +259,17 @@ public class Session extends JFrame {
 		contentPane.add(separator_1);
 		
 		btnNewButton_1_2 = new JButton("Parallel ");
-		btnNewButton_1_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		btnNewButton_1_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 		btnNewButton_1_2.setBounds(36, 425, 155, 47);
 		contentPane.add(btnNewButton_1_2);
 		
 		btnNewButton_1_3 = new JButton("Non-overlapping");
-		btnNewButton_1_3.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		btnNewButton_1_3.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 		btnNewButton_1_3.setBounds(36, 517, 155, 47);
 		contentPane.add(btnNewButton_1_3);
 		
 		btnNewButton_1_4 = new JButton("Session Rooms");
-		btnNewButton_1_4.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		btnNewButton_1_4.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 		btnNewButton_1_4.setBounds(36, 607, 155, 47);
 		contentPane.add(btnNewButton_1_4);
 		
@@ -275,12 +279,12 @@ public class Session extends JFrame {
 		contentPane.add(btnNewButton_1_5);
 		
 		btnNewButton_1_2_1 = new JButton("Consecutive");
-		btnNewButton_1_2_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		btnNewButton_1_2_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 		btnNewButton_1_2_1.setBounds(36, 332, 155, 47);
 		contentPane.add(btnNewButton_1_2_1);
 		
 		btnNewButton_1_2_2 = new JButton("Add Session");
-		btnNewButton_1_2_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		btnNewButton_1_2_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 		btnNewButton_1_2_2.setBounds(36, 242, 155, 47);
 		contentPane.add(btnNewButton_1_2_2);
 		
@@ -417,7 +421,7 @@ public class Session extends JFrame {
 		textField.setForeground(new Color(0, 51, 102));
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textField.setColumns(10);
-		textField.setBounds(308, 369, 488, 38);
+		textField.setBounds(256, 369, 597, 38);
 		panel.add(textField);
 		
 		JButton Add = new JButton("Add Session");
@@ -490,15 +494,15 @@ public class Session extends JFrame {
 		lblDuration.setBounds(25, 375, 157, 19);
 		panel_1.add(lblDuration);
 		
-		JSpinner spinner_1 = new JSpinner();
+		spinner_1 = new JSpinner();
 		spinner_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		spinner_1.setBounds(172, 375, 206, 20);
 		panel_1.add(spinner_1);
 		
-		
 		JButton updateSession = new JButton("Update");
 		updateSession.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+					
 			}
 		});
 		updateSession.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -511,6 +515,48 @@ public class Session extends JFrame {
 		panel_1.add(ClearSession);
 		
 		JButton DeleteSession = new JButton("Delete");
+		DeleteSession.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int selectedRow = table_session.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table_session.getModel();
+			     String id =(model.getValueAt(selectedRow, 0).toString());
+			     
+				
+				try {
+					Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+					
+					String sql = "DELETE  FROM session WHERE id = "+id;
+					PreparedStatement pst = connection.prepareStatement(sql);
+			        int rs=pst.executeUpdate(sql);
+			        
+			        connection.close();
+	                   JOptionPane.showMessageDialog(null, "Deleted Successfully");
+ 
+	               }
+				catch (Exception exception) {
+			         exception.printStackTrace();
+			     }
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                   Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                   String query = "select * from session";
+                   Statement sta = connection.createStatement();
+                   ResultSet rs1 = sta.executeQuery(query);
+                   
+                   table_session.setModel(DbUtils.resultSetToTableModel(rs1));
+                   connection.close();
+                   
+                   
+                   
+               } catch (Exception exception) {
+               	
+                   exception.printStackTrace();
+               }
+								
+			}
+		});
 		DeleteSession.setFont(new Font("Tahoma", Font.BOLD, 13));
 		DeleteSession.setBounds(156, 435, 85, 33);
 		panel_1.add(DeleteSession);
@@ -598,6 +644,24 @@ public class Session extends JFrame {
 		panel_manage.add(scrollPane);
 		
 		table_session = new JTable();
+		table_session.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				int selectedRow = table_session.getSelectedRow();
+				DefaultTableModel model = (DefaultTableModel) table_session.getModel();
+				
+				session_code_1.setText(model.getValueAt(selectedRow, 1).toString());
+				combo_lec2_1.setSelectedItem(model.getValueAt(selectedRow, 2).toString());
+				combo_lec2.setSelectedItem(model.getValueAt(selectedRow, 3).toString());;
+				combo_sub2.setSelectedItem(model.getValueAt(selectedRow, 4).toString());
+				combo_lec2_subcode.setSelectedItem(model.getValueAt(selectedRow, 5).toString());;
+				combo_sess_grpid.setSelectedItem(model.getValueAt(selectedRow, 6).toString());;
+				combo_sess_tag.setSelectedItem(model.getValueAt(selectedRow, 7).toString());;
+				textField_studentCount.setText(model.getValueAt(selectedRow, 8).toString());;
+				spinner_1.setValue(model.getValueAt(selectedRow, 9));
+			}
+		});
 		table_session.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -607,13 +671,30 @@ public class Session extends JFrame {
 		));
 		scrollPane.setViewportView(table_session);
 		
-		table = new JTable();
-		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		table.setBackground(Color.WHITE);
-		table.setBounds(416, 170, 816, 0);
-		panel_manage.add(table);
-		
 		JButton btnRefresh_session = new JButton("Refresh");
+		btnRefresh_session.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//int selectedRow=table.getSelectedRow();
+                DefaultTableModel model2=(DefaultTableModel) table_session.getModel();
+				//String id=(model.getValueAt(selectedRow, 0).toString());
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+                    String query = "select id as 'ID', sessionCode as 'Session Code', lecturer_1 as 'Lecturer 1', lecturer_2 as 'Lecturer 2', subjectName as 'Subject Name', subjectCode as 'Subject Code', groupID as 'Group ID', tag as 'Tag',noOfStudents as 'No. of Students', duration as 'Duration' from session";
+                    Statement sta = connection.createStatement();
+                    ResultSet rs1 = sta.executeQuery(query);
+                    
+                    table_session.setModel(DbUtils.resultSetToTableModel(rs1));
+                    connection.close();
+                    
+                } catch (Exception exception) {
+                	
+                    exception.printStackTrace();
+                }
+			}
+		});
 		btnRefresh_session.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnRefresh_session.setBounds(1135, 18, 98, 33);
 		panel_manage.add(btnRefresh_session);
