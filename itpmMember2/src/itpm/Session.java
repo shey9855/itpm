@@ -39,6 +39,8 @@ import com.mysql.cj.xdevapi.PreparableStatement;
 import net.proteanit.sql.DbUtils;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Session extends JFrame {
 
@@ -75,6 +77,7 @@ public class Session extends JFrame {
 	private JSpinner spinnerSession;
 	private JLabel lblNewLabel_level_required_1;
 	private JSpinner spinner_1;
+	private JLabel lblNewLabel_level_required_1_1;
 	/**
 	 * Launch the application.
 	 */
@@ -317,6 +320,12 @@ public class Session extends JFrame {
 		panel.add(lblNewLabel_3);
 		
 		textFieldSessionCode = new JTextField();
+		textFieldSessionCode.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {				
+				lblNewLabel_level_required_1.setText(""); 
+			}
+		});
 		textFieldSessionCode.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textFieldSessionCode.setColumns(10);
 		textFieldSessionCode.setBounds(256, 34, 284, 26);
@@ -438,6 +447,18 @@ public class Session extends JFrame {
 				String no_of_students = textField_noOfstu.getText();
 				int duration = (int) spinnerSession.getValue();
 				
+				if(textFieldSessionCode.getText().trim().isEmpty() && textField_noOfstu.getText().trim().isEmpty())                {
+					lblNewLabel_level_required_1.setText("Session Code is required !");  
+					lblNewLabel_level_required_1_1.setText("Student Count is required!");
+				}
+				else if(textField_noOfstu.getText().trim().isEmpty()) {
+					lblNewLabel_level_required_1_1.setText("Student Count is required!");
+                }
+				else if(textFieldSessionCode.getText().trim().isEmpty()) {
+					lblNewLabel_level_required_1.setText("Student Count is required!");
+				}
+                else {
+				
 				try {
                 	Class.forName("com.mysql.cj.jdbc.Driver");
 			       Connection connection2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
@@ -447,15 +468,14 @@ public class Session extends JFrame {
                    int x = sta.executeUpdate(query);
                    
                    JOptionPane.showMessageDialog(null, "Inserted Successfully");
-                   //subject_name_required.setText(""); 
-                   //subject_code_required_1.setText(""); 
                    connection2.close();
                                       
                } catch (Exception exception) {
                	
                    exception.printStackTrace();
-                   //JOptionPane.showMessageDialog(null, "Already Exist");
+                   JOptionPane.showMessageDialog(null, "Already Exist");
                }
+			}
 			}
 		});
 		Add.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -470,8 +490,14 @@ public class Session extends JFrame {
 		lblNewLabel_level_required_1 = new JLabel("");
 		lblNewLabel_level_required_1.setForeground(Color.RED);
 		lblNewLabel_level_required_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
-		lblNewLabel_level_required_1.setBounds(256, 70, 282, 13);
+		lblNewLabel_level_required_1.setBounds(256, 60, 282, 13);
 		panel.add(lblNewLabel_level_required_1);
+		
+		lblNewLabel_level_required_1_1 = new JLabel("");
+		lblNewLabel_level_required_1_1.setForeground(Color.RED);
+		lblNewLabel_level_required_1_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel_level_required_1_1.setBounds(256, 293, 282, 13);
+		panel.add(lblNewLabel_level_required_1_1);
 		
 		panel_manage = new JPanel();
 		panel_manage.setBackground(Color.WHITE);
