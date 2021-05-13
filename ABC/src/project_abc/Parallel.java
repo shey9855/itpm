@@ -12,32 +12,26 @@ import javax.swing.table.TableModel;
 
 import net.proteanit.sql.DbUtils;
 
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.SwingConstants;
-import javax.swing.JButton;
 import javax.swing.JTable;
+import javax.swing.JButton;
 import java.awt.Font;
-import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.AncestorEvent;
 
-public class Consecutive extends JFrame {
+public class Parallel extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table_session;
-	private JTable table_consecutive;
-	//TableModel model1;
-	DefaultTableModel model2;
+	private JTable table_sessionpara;
+	
+	private JTable table_para;
 
 	/**
 	 * Launch the application.
@@ -46,7 +40,7 @@ public class Consecutive extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Consecutive frame = new Consecutive();
+					Parallel frame = new Parallel();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,81 +52,32 @@ public class Consecutive extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Consecutive() {
+	public Parallel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1468, 756);
+		setBounds(100, 100, 1539, 843);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.BLACK);
-		separator.setBounds(10, 80, 1497, 2);
-		contentPane.add(separator);
-		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(Color.BLACK);
-		separator_1.setBounds(186, 115, 2, 649);
+		separator_1.setBounds(137, 120, 2, 649);
 		contentPane.add(separator_1);
-		
-		JButton btnNewButton_1_2_2 = new JButton("Add Session");
-		btnNewButton_1_2_2.setBounds(10, 138, 155, 47);
-		contentPane.add(btnNewButton_1_2_2);
-		
-		JButton btnNewButton_1_2_1 = new JButton("Consecutive");
-		btnNewButton_1_2_1.setBounds(10, 226, 155, 47);
-		contentPane.add(btnNewButton_1_2_1);
-		
-		JButton btnNewButton_1_2 = new JButton("Parallel ");
-		btnNewButton_1_2.setBounds(10, 336, 155, 47);
-		contentPane.add(btnNewButton_1_2);
-		
-		JButton btnNewButton_1_3 = new JButton("Non-overlapping");
-		btnNewButton_1_3.setBounds(10, 445, 155, 47);
-		contentPane.add(btnNewButton_1_3);
-		
-		JButton btnNewButton_1_4 = new JButton("Session Rooms");
-		btnNewButton_1_4.setBounds(10, 544, 155, 47);
-		contentPane.add(btnNewButton_1_4);
-		
-		JButton btnNewButton_1_5 = new JButton("Not Available Time");
-		btnNewButton_1_5.setBounds(10, 648, 155, 47);
-		contentPane.add(btnNewButton_1_5);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(225, 170, 1176, 301);
 		contentPane.add(scrollPane);
 		
-		table_session = new JTable();
-		table_session.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				
-			}
-		});
-		scrollPane.setViewportView(table_session);
+		table_sessionpara = new JTable();
+		scrollPane.setViewportView(table_sessionpara);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(229, 544, 1172, 175);
-		contentPane.add(scrollPane_1);
+		JSeparator separator = new JSeparator();
+		separator.setForeground(Color.BLACK);
+		separator.setBounds(10, 106, 1497, 2);
+		contentPane.add(separator);
 		
-		table_consecutive = new JTable();
-		table_consecutive.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-			}
-		});
-		
-		 model2 = new DefaultTableModel();
-			Object[] column = {"ID","Session Code","Lecture1","Lecture2","Subject Name","Subject Code","Group ID","Tag","No of Students","Duration"};
-			final Object[] row = new Object[0];
-			model2.setColumnIdentifiers(column);
-			table_consecutive.setModel(model2);
-		scrollPane_1.setViewportView(table_consecutive);
 		
 		
 		JButton btn_loadsession = new JButton("Load Details");
@@ -148,18 +93,18 @@ public class Consecutive extends JFrame {
 					 PreparedStatement st =  connection.prepareStatement(query);
 	                    ResultSet rs = st.executeQuery();
 		                   
-	                   table_session.setModel(DbUtils.resultSetToTableModel(rs));
+	                   table_sessionpara.setModel(DbUtils.resultSetToTableModel(rs));
 	                   
 	                   st.close();
 	                   
 	                   
 	                   //load details from consecutive table
-	                   String query2 = "select con_id as 'ID',con_Code as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from consecutive";
+	                   String query2 = "select par_id as 'ID',par_Code as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from parallel";
 	                    
 						 PreparedStatement st1 =  connection.prepareStatement(query2);
 		                    ResultSet rs1 = st1.executeQuery();
 			                   
-		                   table_consecutive.setModel(DbUtils.resultSetToTableModel(rs1)); 
+		                   table_para.setModel(DbUtils.resultSetToTableModel(rs1)); 
 	                    
 	                    st1.close();
 	                    
@@ -170,28 +115,28 @@ public class Consecutive extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
+				
+				
 			}
 		});
 		btn_loadsession.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btn_loadsession.setBounds(1262, 119, 116, 27);
+		btn_loadsession.setBounds(1289, 126, 116, 27);
 		contentPane.add(btn_loadsession);
 		
-		JButton btn_addsession = new JButton("Add Session");
-		
-		btn_addsession.addActionListener(new ActionListener() {
+		JButton btn_addsess = new JButton("Add Session");
+		btn_addsess.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
 					java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
 					
-				TableModel model1 =  table_session.getModel();
-				int indexs[] = table_session.getSelectedRows();
+				TableModel model1 =  table_sessionpara.getModel();
+				int indexs[] = table_sessionpara.getSelectedRows();
 				
 				Object[] row = new Object[10];
 				
 				
-				DefaultTableModel model2 = (DefaultTableModel) table_consecutive.getModel();
+				DefaultTableModel model2 = (DefaultTableModel) table_para.getModel();
 				
 				for (int i=0; i<indexs.length; i++)
 				{
@@ -209,7 +154,7 @@ public class Consecutive extends JFrame {
 					model2.addRow(row);
 					
 					
-					String query = "insert into consecutive(con_id,con_Code,lecturer_1,lecturer_2,subjectName,subjectCode,groupID,tag,noOfStudents,duration) values (?,?,?,?,?,?,?,?,?,?)";
+					String query = "insert into parallel(par_id,par_Code,lecturer_1,lecturer_2,subjectName,subjectCode,groupID,tag,noOfStudents,duration) values (?,?,?,?,?,?,?,?,?,?)";
 					
 					PreparedStatement prepstmt = connection.prepareStatement(query);
 					
@@ -239,33 +184,31 @@ public class Consecutive extends JFrame {
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "The Record is Already Exist");
 				}
-				
-				
 			}
 		});
-		btn_addsession.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btn_addsession.setBounds(1218, 481, 116, 27);
-		contentPane.add(btn_addsession);
+		btn_addsess.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btn_addsess.setBounds(1289, 502, 116, 27);
+		contentPane.add(btn_addsess);
 		
-		JButton btn_deletecon = new JButton("Delete Consecutive Rows");
-		btn_deletecon.addActionListener(new ActionListener() {
+		JButton btn_delpara = new JButton("Delete Parallel Rows");
+		btn_delpara.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				int selectedRow = table_consecutive.getSelectedRow();
-			     DefaultTableModel model = (DefaultTableModel) table_consecutive.getModel();
-			     String con_id =(model.getValueAt(selectedRow, 0).toString());
+				int selectedRow = table_para.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table_para.getModel();
+			     String par_id =(model.getValueAt(selectedRow, 0).toString());
 			     
 			     try {
 			    	 java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
 						
-						String query = "DELETE  FROM consecutive WHERE con_id = "+con_id;
+						String query = "DELETE  FROM parallel WHERE par_id = "+par_id;
 						PreparedStatement pst = connection.prepareStatement(query);
 						int rs = pst.executeUpdate(query);		  
 						
 						if (rs == 0) {
-				             JOptionPane.showMessageDialog(btn_deletecon, "This is alredy exist");
+				             JOptionPane.showMessageDialog(btn_delpara, "This is alredy exist");
 				         } else {
-				             JOptionPane.showMessageDialog(btn_deletecon,"Student Group details successfully Deleted");
+				             JOptionPane.showMessageDialog(btn_delpara,"Student Group details successfully Deleted");
 				         }
 				         connection.close();
 	                   
@@ -274,20 +217,27 @@ public class Consecutive extends JFrame {
 					catch (Exception exception) {
 				         exception.printStackTrace();
 				     }
-					
 			     try {
 						java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
 						
-						
+						//load details from session table
+						 String query = "select id as 'ID',sessionCode as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from session";
+		                    
+						 PreparedStatement st =  connection.prepareStatement(query);
+		                    ResultSet rs = st.executeQuery();
+			                   
+		                   table_sessionpara.setModel(DbUtils.resultSetToTableModel(rs));
+		                   
+		                   st.close();
 		                   
 		                   
 		                   //load details from consecutive table
-		                   String query2 = "select con_id as 'ID',con_Code as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from consecutive";
+		                   String query2 = "select par_id as 'ID',par_Code as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from parallel";
 		                    
 							 PreparedStatement st1 =  connection.prepareStatement(query2);
 			                    ResultSet rs1 = st1.executeQuery();
 				                   
-			                   table_consecutive.setModel(DbUtils.resultSetToTableModel(rs1)); 
+			                   table_para.setModel(DbUtils.resultSetToTableModel(rs1)); 
 		                    
 		                    st1.close();
 		                    
@@ -300,14 +250,17 @@ public class Consecutive extends JFrame {
 					}
 			     
 			     
-			     
-			     
-				
-				
 			}
 		});
-		btn_deletecon.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btn_deletecon.setBounds(901, 481, 189, 27);
-		contentPane.add(btn_deletecon);
+		btn_delpara.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btn_delpara.setBounds(928, 502, 242, 27);
+		contentPane.add(btn_delpara);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(225, 580, 1176, 216);
+		contentPane.add(scrollPane_1);
+		
+		table_para = new JTable();
+		scrollPane_1.setViewportView(table_para);
 	}
 }
