@@ -220,15 +220,7 @@ public class Parallel extends JFrame {
 			     try {
 						java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
 						
-						//load details from session table
-						 String query = "select id as 'ID',sessionCode as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from session";
-		                    
-						 PreparedStatement st =  connection.prepareStatement(query);
-		                    ResultSet rs = st.executeQuery();
-			                   
-		                   table_sessionpara.setModel(DbUtils.resultSetToTableModel(rs));
-		                   
-		                   st.close();
+						
 		                   
 		                   
 		                   //load details from consecutive table

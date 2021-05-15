@@ -194,10 +194,73 @@ public class Nonoverlap extends JFrame {
 		btn_loadsession_1.setBounds(1285, 522, 116, 27);
 		contentPane.add(btn_loadsession_1);
 		
-		JButton btn_loadsession_2 = new JButton("Delete Nonoverlapping Rows");
-		btn_loadsession_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btn_loadsession_2.setBounds(951, 522, 225, 27);
-		contentPane.add(btn_loadsession_2);
+		JButton btn_nondelete = new JButton("Delete Nonoverlapping Rows");
+		btn_nondelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int selectedRow = table_nonoverlap.getSelectedRow();
+			     DefaultTableModel model = (DefaultTableModel) table_nonoverlap.getModel();
+			     String non_id =(model.getValueAt(selectedRow, 0).toString());
+			     
+			     try {
+			    	 java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
+						
+						String query = "DELETE  FROM nonoverlap WHERE non_id = "+non_id;
+						PreparedStatement pst = connection.prepareStatement(query);
+						int rs = pst.executeUpdate(query);		  
+						
+						if (rs == 0) {
+				             JOptionPane.showMessageDialog(btn_nondelete, "This is alredy exist");
+				         } else {
+				             JOptionPane.showMessageDialog(btn_nondelete,"Student Group details successfully Deleted");
+				         }
+				         connection.close();
+	                   
+						
+					}
+					catch (Exception exception) {
+				         exception.printStackTrace();
+				     }
+			     
+			     try {
+						java.sql.Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "Highschool23*");
+						
+						
+		                   
+		                   //load details from consecutive table
+		                   String query2 = "select non_id as 'ID',non_Code as 'Session Code',lecturer_1 as 'Lecture1',lecturer_2 as 'Lecture2',subjectName as 'Subject Name',subjectCode as 'Subject Code',groupID as 'Group ID',tag as 'Tag',noOfStudents as 'No of Students',duration as 'Duration'  from nonoverlap";
+		                    
+							 PreparedStatement st1 =  connection.prepareStatement(query2);
+			                    ResultSet rs1 = st1.executeQuery();
+				                   
+			                   table_nonoverlap.setModel(DbUtils.resultSetToTableModel(rs1)); 
+		                    
+		                    st1.close();
+		                   
+		                    
+		                    
+		                    
+						
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+			     
+			  
+                 
+                  
+                  
+                  
+				
+			
+			     
+			     
+			}
+		});
+		btn_nondelete.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btn_nondelete.setBounds(951, 522, 225, 27);
+		contentPane.add(btn_nondelete);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(225, 565, 1176, 227);
