@@ -30,6 +30,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
+import javax.swing.JLabel;
 
 public class Consecutive extends JFrame {
 
@@ -62,13 +63,14 @@ public class Consecutive extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1468, 756);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(102, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.BLACK);
-		separator.setBounds(10, 80, 1497, 2);
+		separator.setBounds(10, 92, 1497, 2);
 		contentPane.add(separator);
 		
 		JSeparator separator_1 = new JSeparator();
@@ -102,7 +104,7 @@ public class Consecutive extends JFrame {
 		contentPane.add(btnNewButton_1_5);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(225, 170, 1176, 301);
+		scrollPane.setBounds(229, 153, 1176, 301);
 		contentPane.add(scrollPane);
 		
 		table_session = new JTable();
@@ -244,7 +246,7 @@ public class Consecutive extends JFrame {
 			}
 		});
 		btn_addsession.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btn_addsession.setBounds(1218, 481, 116, 27);
+		btn_addsession.setBounds(1219, 465, 116, 27);
 		contentPane.add(btn_addsession);
 		
 		JButton btn_deletecon = new JButton("Delete Consecutive Rows");
@@ -307,7 +309,24 @@ public class Consecutive extends JFrame {
 			}
 		});
 		btn_deletecon.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btn_deletecon.setBounds(901, 481, 189, 27);
+		btn_deletecon.setBounds(906, 464, 189, 27);
 		contentPane.add(btn_deletecon);
+		
+		JLabel lblNewLabel = new JLabel("ABC Institute");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setForeground(new Color(0, 0, 51));
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 70));
+		lblNewLabel.setBackground(new Color(0, 0, 51));
+		lblNewLabel.setBounds(604, 0, 513, 82);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblNewLabel_8 = new JLabel("Manage Consecutive Sessions");
+		lblNewLabel_8.setBackground(new Color(255, 102, 255));
+		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_8.setForeground(Color.BLACK);
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblNewLabel_8.setBounds(682, 105, 364, 38);
+		contentPane.add(lblNewLabel_8);
 	}
 }

@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 public class Parallel extends JFrame {
 
@@ -56,6 +57,7 @@ public class Parallel extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1539, 843);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(102, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -63,7 +65,7 @@ public class Parallel extends JFrame {
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(Color.BLACK);
-		separator_1.setBounds(137, 120, 2, 649);
+		separator_1.setBounds(175, 125, 2, 649);
 		contentPane.add(separator_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -254,5 +256,61 @@ public class Parallel extends JFrame {
 		
 		table_para = new JTable();
 		scrollPane_1.setViewportView(table_para);
+		
+		JLabel lblNewLabel = new JLabel("ABC Institute");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setForeground(new Color(0, 0, 51));
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 70));
+		lblNewLabel.setBackground(new Color(0, 0, 51));
+		lblNewLabel.setBounds(619, 10, 513, 82);
+		contentPane.add(lblNewLabel);
+		
+		JButton btnNewButton_1_2_2 = new JButton("Add Session");
+		btnNewButton_1_2_2.setBounds(10, 168, 155, 47);
+		contentPane.add(btnNewButton_1_2_2);
+		
+		JButton btnNewButton_1_2_1 = new JButton("Consecutive");
+		btnNewButton_1_2_1.setBounds(10, 281, 155, 47);
+		contentPane.add(btnNewButton_1_2_1);
+		
+		JButton btnNewButton_1_2 = new JButton("Parallel ");
+		btnNewButton_1_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1_2.setBounds(10, 386, 155, 47);
+		contentPane.add(btnNewButton_1_2);
+		
+		JButton btnNewButton_1_3 = new JButton("Non-overlapping");
+		btnNewButton_1_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1_3.setBounds(10, 502, 155, 47);
+		contentPane.add(btnNewButton_1_3);
+		
+		JButton btnNewButton_1_4 = new JButton("Session Rooms");
+		btnNewButton_1_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1_4.setBounds(10, 616, 155, 47);
+		contentPane.add(btnNewButton_1_4);
+		
+		JButton btnNewButton_1_5 = new JButton("Not Available Time");
+		btnNewButton_1_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1_5.setBounds(10, 718, 155, 47);
+		contentPane.add(btnNewButton_1_5);
+		
+		JLabel lblNewLabel_8 = new JLabel("Manage Parallel Sessions");
+		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_8.setForeground(Color.BLACK);
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblNewLabel_8.setBounds(633, 125, 364, 38);
+		contentPane.add(lblNewLabel_8);
 	}
 }
