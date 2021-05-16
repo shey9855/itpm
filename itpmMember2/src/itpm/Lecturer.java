@@ -406,7 +406,7 @@ public class Lecturer extends JFrame {
 		comboBox_Build.setBounds(187, 433, 282, 21);
 		panel.add(comboBox_Build);
 	
-		String [] level = {"(select)", "1", "2", "3", "4", "5","6"};
+		String [] level = {"1", "2", "3", "4", "5","6"};
 		comboBox_Lev = new JComboBox(level);
 		comboBox_Lev.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboBox_Lev.addKeyListener(new KeyAdapter() {
@@ -584,12 +584,12 @@ public class Lecturer extends JFrame {
 				
 				textField_lecName.setText("");
 				textField_empID.setText("");
-				comboBox_Lev.setSelectedItem("(select)");
+				comboBox_Lev.setSelectedIndex(-1);
 				textField_rank.setText("");
-				comboBox_Faculty.setSelectedItem("(select)");
-				comboBox_Dept.setSelectedItem("(select)");
-				comboBox_Center.setSelectedItem("(select)");
-				comboBox_Build.setSelectedItem("(select)");
+				comboBox_Faculty.setSelectedIndex(-1);
+				comboBox_Dept.setSelectedIndex(-1);
+				comboBox_Center.setSelectedIndex(-1);
+				comboBox_Build.setSelectedIndex(-1);
 				monday.setText("");
 				tuesday.setText("");
 				wednesday.setText("");

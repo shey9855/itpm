@@ -43,6 +43,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Session extends JFrame {
 
@@ -105,6 +107,8 @@ public class Session extends JFrame {
 		layeredPane.revalidate();
 	}
 	
+	
+	
 	public void fillComboBoxLec()
 	{
 		 try {
@@ -120,9 +124,7 @@ public class Session extends JFrame {
 		    	   comboBox_Lec2.addItem(rSet.getString("lecturer_name"));
 		    	   combo_lec2_1.addItem(rSet.getString("lecturer_name"));
 		    	   combo_lec2.addItem(rSet.getString("lecturer_name"));
-			}
-		       conne.close();
-			
+			}conne.close();			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -147,42 +149,22 @@ public class Session extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	public void fillComboBoxSubcode()
-	{
-		 try {
-			 Class.forName("com.mysql.cj.jdbc.Driver");
-		       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
-		       
-		       String query = "select*from subject";
-		       PreparedStatement pStatement = conne.prepareStatement(query);
-		       ResultSet rSet=pStatement.executeQuery();
-		       
-		       while (rSet.next()) {
-		    	   comboBox_code.addItem(rSet.getString("sub_code"));
-		    	   combo_lec2_subcode.addItem(rSet.getString("sub_code"));
-			}
-		       conne.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	public void fillComboBoxGrpID()
 	{
 		 try {
 			 Class.forName("com.mysql.cj.jdbc.Driver");
 		       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
 		       
-		       String query = "select*from student_grp";
+		       String query = "select * from student_grp";
 		       PreparedStatement pStatement = conne.prepareStatement(query);
 		       ResultSet rSet=pStatement.executeQuery();
 		       
 		       while (rSet.next()) {
 		    	   comboBox_grp.addItem(rSet.getString("group_id"));
+		    	   comboBox_grp.addItem(rSet.getString("subGroup_id"));
 		    	   combo_sess_grpid.addItem(rSet.getString("group_id"));
-			}
-		       conne.close();
-			
+		    	   combo_sess_grpid.addItem(rSet.getString("subGroup_id"));
+			}conne.close();			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -200,32 +182,12 @@ public class Session extends JFrame {
 		       while (rSet.next()) {
 		    	   comboBox_tag.addItem(rSet.getString("related_tag"));
 		    	   combo_sess_tag.addItem(rSet.getString("related_tag"));
-			}
-		       conne.close();
-			
+			}conne.close();			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	/*public void fillComboBoxSearch()
-	{
-		 try {
-			 Class.forName("com.mysql.cj.jdbc.Driver");
-		       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
-		       
-		       String query = "select*from session";
-		       PreparedStatement pStatement = conne.prepareStatement(query);
-		       ResultSet rSet=pStatement.executeQuery();
-		       
-		       while (rSet.next()) {
-		    	   comboBox_search.addItem(rSet.getString("sessionCode"));		    	   
-			}
-		       conne.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
+	
 	/**
 	 * Create the frame.
 	 */
@@ -392,6 +354,28 @@ public class Session extends JFrame {
 		panel.add(comboBox_Lec1);
 		
 		comboBox_sub = new JComboBox();
+		comboBox_sub.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				
+				try {
+					 Class.forName("com.mysql.cj.jdbc.Driver");
+				       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+				       
+				       String query = "select sub_code from subject where sub_name ='"+comboBox_sub.getSelectedItem()+"'";
+				       PreparedStatement pStatement = conne.prepareStatement(query);
+				       ResultSet rSet=pStatement.executeQuery();
+				       comboBox_code.removeAllItems();
+				       while (rSet.next()) {
+				    	   
+				       comboBox_code.addItem(rSet.getString("sub_code"));				    	   
+					}
+				       conne.close();
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		comboBox_sub.setBounds(256, 154, 284, 21);
 		panel.add(comboBox_sub);
 		
@@ -520,6 +504,11 @@ public class Session extends JFrame {
 		lblNewLabel_level_required_1_1.setBounds(256, 293, 282, 13);
 		panel.add(lblNewLabel_level_required_1_1);
 		
+		JLabel lblNewLabel_3_4_4_1 = new JLabel("Hrs");
+		lblNewLabel_3_4_4_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_3_4_4_1.setBounds(1009, 273, 49, 19);
+		panel.add(lblNewLabel_3_4_4_1);
+		
 		panel_manage = new JPanel();
 		panel_manage.setBackground(Color.WHITE);
 		layeredPane.add(panel_manage, "name_689261342226900");
@@ -632,6 +621,7 @@ public class Session extends JFrame {
 	               }
 				catch (Exception exception) {
 			         exception.printStackTrace();
+			         //JOptionPane.showMessageDialog(null, "Please select a Data set");
 			     }
 				
 				try {
@@ -649,6 +639,7 @@ public class Session extends JFrame {
                } catch (Exception exception) {
                	
                    exception.printStackTrace();
+                   
                }
 								
 			}
@@ -699,6 +690,28 @@ public class Session extends JFrame {
 		panel_1.add(combo_lec2_1);
 		
 		combo_sub2 = new JComboBox(new Object[]{});
+		combo_sub2.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				
+				try {
+					 Class.forName("com.mysql.cj.jdbc.Driver");
+				       Connection conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/abc", "root", "ABCroot@1");
+				       
+				       String query = "select sub_code from subject where sub_name ='"+combo_sub2.getSelectedItem()+"'";
+				       PreparedStatement pStatement = conne.prepareStatement(query);
+				       ResultSet rSet=pStatement.executeQuery();
+				       combo_lec2_subcode.removeAllItems();
+				       while (rSet.next()) {
+				    	   
+				    	   combo_lec2_subcode.addItem(rSet.getString("sub_code"));				    	   
+					}
+				       conne.close();
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		combo_sub2.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		combo_sub2.setBounds(172, 155, 206, 21);
 		panel_1.add(combo_sub2);
@@ -834,11 +847,8 @@ public class Session extends JFrame {
                 pst.close();
                 
             } catch (Exception exception) {
-            	
-                exception.printStackTrace();
-            }
-		      
-			
+             exception.printStackTrace(); 
+            }		      			
 		}
 		});
 		textField_1_seacrh.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -870,10 +880,10 @@ public class Session extends JFrame {
 		
 		fillComboBoxLec();
 		fillComboBoxSubName();
-		fillComboBoxSubcode();
+		
 		fillComboBoxGrpID();
 		fillComboBoxTag();
-		//fillComboBoxSearch();
+		
 		
 	}
 }
